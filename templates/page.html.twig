@@ -1,8 +1,18 @@
-page.html.twig
+{% extends "base.html.twig" %}
 
-        <ol>
-            {% for key, value in _context  %}
-              <li>{{ key }}</li>
-            {% endfor %}
-        </ol>  
-        {{ dump(entity) }}
+{% block content %}
+		<h2>{{ page.getTitle() }}</h2>
+        <small><b>Category: </b><a href="/category/{{ pageDigest.getCategorySlug() }}">{{ pageDigest.getCategoryName() }}</a> <b>Author: </b>{{ pageDigest.getAuthorName() }} <b>Date Published: </b>{{ page.getDateCreated() }}</small>
+        <p/>
+	    <h4>Introduction</h4>
+        <p>{{ page.getIntroduction() }}</p>
+        <p>{{ page.getBody() }}</p>
+        {% set stepCtr = 1 %}
+	    {% for step in page.getSteps() %}
+	        <h4>Step {{ stepCtr }}: {{ step.getName() }}</h4>
+	        <p>{{ step.body() }}</p>
+        	{% set stepCtr = stepCtr + 1 %}
+	    {% endfor %}
+	    <h4>Conclusion</h4>
+        <p>{{ page.getConclusion() }}</p>
+{% endblock %}

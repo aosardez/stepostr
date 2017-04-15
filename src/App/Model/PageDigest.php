@@ -2,12 +2,14 @@
 
 namespace App\Model;
 
-class PageLookup
+class PageDigest
 {
 	protected $id;
     protected $title;
+    protected $slug;
     protected $introduction;
     protected $categoryName;
+    protected $categorySlug;
     protected $authorName;
     protected $updaterName;
     protected $dateCreated;
@@ -16,8 +18,10 @@ class PageLookup
 	public function __construct(array $data) {
         $this->id = $data['id'];
         $this->title = $data['title'];
+        $this->slug = $data['slug'];
         $this->introduction = $data['introduction'];
         $this->categoryName = $data['categoryName'];
+        $this->categorySlug = $data['categorySlug'];
         $this->authorName = $data['authorName'];
         $this->updaterName = $data['updaterName'];
         $this->dateCreated = $data['dateCreated'];
@@ -32,12 +36,20 @@ class PageLookup
         return $this->title;
     }
 
+    public function getSlug() {
+        return $this->slug;
+    }
+
     public function getIntroduction() {
         return $this->introduction;
     }
 
     public function getCategoryName() {
         return $this->categoryName;
+    }
+
+    public function getCategorySlug() {
+        return $this->categorySlug;
     }
 
     public function getAuthorName() {

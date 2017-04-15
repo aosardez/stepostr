@@ -2,14 +2,14 @@
 
 namespace App\ModelMapper;
 
-use App\Model\PageLookup;
+use App\Model\PageDigest;
 use App\ModelMapper\BaseMapper;
 
-class PageLookupMapper extends BaseMapper
+class PageDigestMapper extends BaseMapper
 {
     public function readAll() 
     {
-        $sql = "SELECT p.id, p.title, p.introduction, c.name AS categoryName, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id
@@ -18,14 +18,14 @@ class PageLookupMapper extends BaseMapper
         $stmt = $this->db->query($sql);
         $results = [];
         while($row = $stmt->fetch()) {
-            $results[] = new PageLookup($row);
+            $results[] = new PageDigest($row);
         }
         return $results;
     }
 
     public function readAllByCategory($slug) 
     {
-        $sql = "SELECT p.id, p.title, p.introduction, c.name AS categoryName, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id
@@ -37,14 +37,14 @@ class PageLookupMapper extends BaseMapper
         ]);
         $results = [];
         while($row = $stmt->fetch()) {
-            $results[] = new PageLookup($row);
+            $results[] = new PageDigest($row);
         }
         return $results;
     }
 
     public function readAllByKeywords($keywords) 
     {
-        $sql = "SELECT DISTINCT p.id, p.title, p.introduction, c.name AS categoryName, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+        $sql = "SELECT DISTINCT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id
@@ -57,8 +57,24 @@ class PageLookupMapper extends BaseMapper
         ]);
         $results = [];
         while($row = $stmt->fetch()) {
-            $results[] = new PageLookup($row);
+            $results[] = new PageDigest($row);
         }
         return $results;
+    }
+
+    public function readBySlug($slug) 
+    {
+        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+            LEFT JOIN category c ON p.categoryId = c.id
+            LEFT JOIN account a ON p.authorId = a.id
+            LEFT JOIN account u ON p.updaterId = u.id
+            WHERE p.published = 1 AND p.slug = :slug";
+        $stmt = $this->db->prepare($sql);
+        $result = $stmt->execute([
+            "slug" => $slug
+        ]);
+        if($result) {
+            return new PageDigest($stmt->fetch());
+        }
     }
 }

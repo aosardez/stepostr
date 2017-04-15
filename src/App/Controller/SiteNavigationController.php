@@ -7,8 +7,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
 use App\ModelMapper\AboutMapper;
+use App\ModelMapper\CategoryMapper;
 use App\ModelMapper\PageMapper;
-use App\ModelMapper\PageLookupMapper;
+use App\ModelMapper\PageDigestMapper;
+use App\ModelMapper\SiteDetailMapper;
 
 class SiteNavigationController
 {
@@ -26,40 +28,56 @@ class SiteNavigationController
     public function getAllPages(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Navigation Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
-        $mapper = new PageLookupMapper($this->db);
-        $entity = $mapper->readAll();     
-        return $this->view->render($response, 'index.html.twig', array('entity' => $entity));
+        $pageMapper = new PageDigestMapper($this->db);
+        $pages = $pageMapper->readAll();     
+        return $this->view->render($response, 'index.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $this->getCategories(), 'pages' => $pages));
     }
 
     public function getPagesByCategorySlug(RequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->debug("Area:Navigation Action:getPagesByCategorySlug Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['slug']);        
-        $mapper = new PageLookupMapper($this->db);
-        $entity = $mapper->readAllByCategory($args['slug']);     
-        return $this->view->render($response, 'category.html.twig', array('entity' => $entity));
+        $this->logger->debug("Area:Navigation Action:getPagesByCategorySlug Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['slug']);
+        $pageMapper = new PageDigestMapper($this->db);
+        $pages = $pageMapper->readAllByCategory($args['slug']);     
+        return $this->view->render($response, 'category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $this->getCategories(), 'pages' => $pages, 'category' => $pages[0]->getCategoryName()));
     }
 
     public function getPagesByKeywords(RequestInterface $request, ResponseInterface $response, $args)
-    {
-        $this->logger->debug("Area:Navigation Action:getPagesByKeywords Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['keywords']);        
-        $mapper = new PageLookupMapper($this->db);
-        $entity = $mapper->readAllByKeywords($args['keywords']);     
-        return $this->view->render($response, 'search.html.twig', array('entity' => $entity));
+    {   
+        $this->logger->debug("Area:Navigation Action:getPagesByKeywords Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $_GET['keywords']);
+        $pageMapper = new PageDigestMapper($this->db);  
+        $pages = $pageMapper->readAllByKeywords($_GET['keywords']);     
+        return $this->view->render($response, 'search.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $this->getCategories(), 'pages' => $pages, 'keywords' => $_GET['keywords']));
     }
 
     public function getPageBySlug(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Navigation Action:getPageBySlug Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['slug']);
-        $mapper = new PageMapper($this->db);
-        $entity = $mapper->read($args['slug']);     
-        return $this->view->render($response, 'page.html.twig', array('entity' => $entity));
+        $pageMapper = new PageMapper($this->db);
+        $page = $pageMapper->read($args['slug']);
+        $pageDigestMapper = new PageDigestMapper($this->db);
+        $pageDigest = $pageDigestMapper->readBySlug($args['slug']);
+        return $this->view->render($response, 'page.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $this->getCategories(), 'page' => $page, 'pageDigest' => $pageDigest, 'category' => $pageDigest->getCategoryName()));
     }
 
     public function getAboutPage(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Navigation Action:getAboutPage Client:" . $_SERVER['REMOTE_ADDR']);
-        $mapper = new AboutMapper($this->db);
-        $entity = $mapper->read();     
-        return $this->view->render($response, 'about.html.twig', array('entity' => $entity));
+        $aboutMapper = new AboutMapper($this->db);
+        $about = $aboutMapper->read();     
+        return $this->view->render($response, 'about.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $this->getCategories(), 'about' => $about, 'isAbout' => true));
+    }
+
+    private function getSiteDetail()
+    {
+        $siteDetailMapper = new SiteDetailMapper($this->db);
+        $siteDetail = $siteDetailMapper->read();
+        return $siteDetail;
+    }
+
+    private function getCategories()
+    {
+        $categoriesMapper = new CategoryMapper($this->db);
+        $categories = $categoriesMapper->readAll();   
+        return $categories;     
     }
 }

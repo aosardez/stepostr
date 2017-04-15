@@ -2,11 +2,15 @@
 
 namespace App\ModelMapper;
 
+use App\Model\SiteDetail;
+use App\ModelMapper\BaseMapper;
+
 class SiteDetailMapper extends BaseMapper
 {
     public function read() {
         $sql = "SELECT title, tagline, dateModified FROM sitedetail";
-        $stmt = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $result = $stmt->execute(); 
         if($result) {
             return new SiteDetail($stmt->fetch());
         }

@@ -1,8 +1,8 @@
-about.html.twig
+{% extends "base.html.twig" %}
 
-        <ol>
-            {% for key, value in _context  %}
-              <li>{{ key }}</li>
-            {% endfor %}
-        </ol>  
-        {{ dump(entity) }}
+{% block content %}
+	<h2>About {{ siteDetail.getTitle() }}</h2>
+	<small><b>Date Published: </b>{{ about.getDateModified() }}</small>
+	<p/>
+    <p>{{ about.getBody() }}</p>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+	{% block listTitle %}{% endblock %}
+    {% for page in pages %}
+        <a href="/page/{{ page.getSlug() }}"><h3>{{ page.getTitle() }}</h3></a>
+        <small><b>Category: </b><a href="/category/{{ page.getCategorySlug() }}">{{ page.getCategoryName() }}</a> <b>Author: </b>{{ page.getAuthorName() }} <b>Date Published: </b>{{ page.getDateCreated() }}</small>
+        <p/>
+        <p>{{ page.getIntroduction() }}</p>
+    {% endfor %}
+{% endblock %}
