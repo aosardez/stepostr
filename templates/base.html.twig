@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>stepostr-navigation</title>
+    <title>{{ siteDetail.getTitle() }}{% if currentTitle %} - {% endif %}{{ currentTitle }}</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
@@ -24,9 +24,13 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav">
-                        {% for cat in categories %}
-                            <li {% if cat.getName() == category %}class="active"{% endif %} role="presentation"><a href="/category/{{ cat.getSlug() }}">{{ cat.getName() }}</a></li>
-                        {% endfor %}
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#"><i class="glyphicon glyphicon-tag"></i> Categories <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for cat in categories %}
+                                    <li {% if cat.getName() == category %}class="active"{% endif %} role="presentation"><a href="/category/{{ cat.getSlug() }}">{{ cat.getName() }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
                         <li {% if isAbout %}class="active"{% endif %} role="presentation"><a href="/about"><i class="glyphicon glyphicon-info-sign"></i> About </a></li>
                     </ul>
                     <form class="navbar-form navbar-right navbar-form" action="/search/">
@@ -49,8 +53,8 @@
     <div id="footer">
         <footer><small>Powered by <strong><a href="https://github.com/aosardez/stepostr">stepostr</a></strong>. Copyright &copy; {{ "now"|date("Y") }}</small></footer>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
 </html>

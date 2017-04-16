@@ -4,20 +4,20 @@ namespace App\Model;
 
 class Theme
 {
-	protected $colorScheme;
+	protected $name;
     protected $bannerImage;
     protected $backgroundImage;
     protected $dateModified;
 
 	public function __construct(array $data) {
-        $this->colorScheme = $data['colorScheme'];
+        $this->colorScheme = $data['name'];
         $this->bannerImage = $data['bannerImage'];
         $this->backgroundImage = $data['backgroundImage'];
         $this->dateModified = $data['dateModified'];
     }
 
-    public function getColorScheme() {
-        return $this->colorScheme;
+    public function getName() {
+        return $this->name;
     }
 
     public function getBannerImage() {

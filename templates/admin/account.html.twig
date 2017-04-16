@@ -1,8 +1,43 @@
-account.html.twig
+{% extends "admin/base.html.twig" %}
 
-        <ol>
-            {% for key, value in _context  %}
-              <li>{{ key }}</li>
-            {% endfor %}
-        </ol>  
-        {{ dump(entity) }}
+{% block content %}
+    <form class="bootstrap-form-with-validation">
+        <h2>My Account</h2>
+        <p> </p>
+        <div class="form-group">
+            <label class="control-label" for="username-input">Username: </label>
+            <p class="form-static-control">{{ account.getUsername() }}</p>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="password-input">Password:</label>
+            <input class="form-control" type="password" name="password-input" value="{{ account.getPassword() }}" required="" maxlength="50" id="password-input">
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="displayname-input">Display Name:</label>
+            <input class="form-control" type="text" name="displayname-input" value="{{ account.getDisplayName() }}" required="" maxlength="100" id="displayname-input">
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" name="active-input" {% if account.getActive() %} checked {% endif %}><strong>Active</strong></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="text-input">Last Login Date:</label>
+            <p class="form-static-control">{{ account.getLastLoginDate() }}</p>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="text-input">Date Created:</label>
+            <p class="form-static-control">{{ account.getDateCreated() }}</p>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="text-input">Date Modified:</label>
+            <p class="form-static-control">{{ account.getDateModified() }}</p>
+            <p> </p>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default" type="submit">Save </button><span> </span>
+            <button class="btn btn-default" type="reset">Cancel</button>
+        </div>
+    </form>
+{% endblock %}

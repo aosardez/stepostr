@@ -40,3 +40,10 @@ nav.navbar.navbar-default{
   margin-bottom:0px;
 }
 
+div#menuContent{
+  max-width:1000px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+

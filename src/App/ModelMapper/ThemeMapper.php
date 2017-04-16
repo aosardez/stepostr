@@ -8,7 +8,7 @@ use App\ModelMapper\BaseMapper;
 class ThemeMapper extends BaseMapper
 {
     public function read() {
-        $sql = "SELECT colorScheme, bannerImage, backgroundImage, dateModified FROM theme";
+        $sql = "SELECT name, bannerImage, backgroundImage, dateModified FROM theme";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute(); 
         if($result) {
@@ -17,10 +17,10 @@ class ThemeMapper extends BaseMapper
     }
 
     public function update(Theme $model) {
-        $sql = "UPDATE theme SET colorScheme = :colorScheme, bannerImage = :bannerImage, backgroundImage = :backgroundImage, dateModified = :dateModified";
+        $sql = "UPDATE theme SET name = :name, bannerImage = :bannerImage, backgroundImage = :backgroundImage, dateModified = :dateModified";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
-            "colorScheme" => $model->getColorScheme(),
+            "name" => $model->getName(),
             "bannerImage" => $model->getBannerImage(),
             "backgroundImage" => $model->getBackgroundImage(),
             "dateModified" => $model->getDateModified()
