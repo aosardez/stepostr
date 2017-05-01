@@ -2,7 +2,7 @@
 
 {% block content %}
 	<h2>About {{ siteDetail.getTitle() }}</h2>
-	<small><b>Date Published: </b>{{ about.getDateModified() }}</small>
+	<small><b>Date Published: </b>{{ about.getDateModified()|date("F d, Y") }}</small>
 	<p/>
     <p>{{ about.getBody() }}</p>
 {% endblock %}

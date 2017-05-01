@@ -24,6 +24,7 @@ class AccountMapper extends BaseMapper
         if(!$result) {
             throw new Exception("could not create record");
         }
+        return $this->db->lastInsertId();
     }
 
     public function readAll() 
@@ -51,7 +52,7 @@ class AccountMapper extends BaseMapper
         }
     }
 
-    public function update(About $model) {
+    public function update(Account $model) {
         $sql = "UPDATE account SET username = :username, password = :password, displayName = :displayName, active = :active, lastLoginDate = :lastLoginDate, dateCreated = :dateCreated, dateModified = :dateModified
             WHERE id = :id";
         $stmt = $this->db->prepare($sql);

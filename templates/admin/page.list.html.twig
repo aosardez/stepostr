@@ -1,8 +1,37 @@
-page.list.html.twig
+{% extends "admin/base.html.twig" %}
 
-        <ol>
-            {% for key, value in _context  %}
-              <li>{{ key }}</li>
-            {% endfor %}
-        </ol>  
-        {{ dump(entity) }}
+{% block content %}
+    <form>
+        <h2>Pages <a class="btn btn-default" href="#">Add New</a></h2>
+        <p> </p>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title </th>
+                        <th>Category </th>
+                        <th>Published </th>
+                        <th>Date Created</th>
+                        <th>Date Modified</th>
+                        <th>Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+	            	{% for pageDigest in pageDigests  %}
+	                    <tr>
+	                        <td>{{ pageDigest.getTitle() }}</td>
+	                        <td>{{ pageDigest.getCategoryName() }}</td>
+	                        <td>{{ pageDigest.getPublished() ? 'yes' : 'no' }}</td>
+	                        <td>{{ pageDigest.getDateCreated()|date("F d, Y g:i A") }}</td>
+	                        <td>{{ pageDigest.getDateModified()|date("F d, Y g:i A") }}</td>
+			                    <td>
+			                    	<a href="/admin/page/{{ pageDigest.getId() }}" class="btn btn-default">Edit</a>
+			                        <button class="btn btn-default" type="button">Delete </button>
+			                    </td>
+	                    </tr>
+	            	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+{% endblock %}

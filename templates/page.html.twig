@@ -2,7 +2,7 @@
 
 {% block content %}
 		<h2>{{ page.getTitle() }}</h2>
-        <small><b>Category: </b><a href="/category/{{ pageDigest.getCategorySlug() }}">{{ pageDigest.getCategoryName() }}</a> <b>Author: </b>{{ pageDigest.getAuthorName() }} <b>Date Published: </b>{{ page.getDateCreated() }}</small>
+        <small><b>Category: </b><a href="/category/{{ pageDigest.getCategorySlug() }}">{{ pageDigest.getCategoryName() }}</a> <b>Author: </b>{{ pageDigest.getAuthorName() }} <b>Date Published: </b>{{ page.getDateCreated()|date("F d, Y") }}</small>
         <p/>
 	    <h4>Introduction</h4>
         <p>{{ page.getIntroduction() }}</p>

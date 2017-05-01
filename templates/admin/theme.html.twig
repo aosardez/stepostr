@@ -33,7 +33,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="text-input">Date Modified:</label>
-            <p class="form-static-control">{{ theme.getDateModified() }}</p>
+            <p class="form-static-control">{{ theme.getDateModified()|date("F d, Y g:i A") }}</p>
             <p> </p>
         </div>
         <div class="form-group">

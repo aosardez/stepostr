@@ -10,22 +10,24 @@ class PageDigest
     protected $introduction;
     protected $categoryName;
     protected $categorySlug;
+    protected $published;
     protected $authorName;
     protected $updaterName;
     protected $dateCreated;
     protected $dateModified;
 
 	public function __construct(array $data) {
-        $this->id = $data['id'];
-        $this->title = $data['title'];
-        $this->slug = $data['slug'];
-        $this->introduction = $data['introduction'];
-        $this->categoryName = $data['categoryName'];
-        $this->categorySlug = $data['categorySlug'];
-        $this->authorName = $data['authorName'];
-        $this->updaterName = $data['updaterName'];
-        $this->dateCreated = $data['dateCreated'];
-        $this->dateModified = $data['dateModified'];
+        $this->id = $data['id'] ?? 0;
+        $this->title = $data['title'] ?? null;
+        $this->slug = $data['slug'] ?? null;
+        $this->introduction = $data['introduction'] ?? null;
+        $this->categoryName = $data['categoryName'] ?? null;
+        $this->categorySlug = $data['categorySlug'] ?? null;
+        $this->published = $data['published'] ?? 0;
+        $this->authorName = $data['authorName'] ?? null;
+        $this->updaterName = $data['updaterName'] ?? null;
+        $this->dateCreated = $data['dateCreated'] ?? null;
+        $this->dateModified = $data['dateModified'] ?? null;
     }
 
     public function getId() {
@@ -50,6 +52,10 @@ class PageDigest
 
     public function getCategorySlug() {
         return $this->categorySlug;
+    }
+
+    public function getPublished() {
+        return $this->published;
     }
 
     public function getAuthorName() {

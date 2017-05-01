@@ -9,11 +9,12 @@ class CategoryMapper extends BaseMapper
 {
     public function create(Category $model)
     {
-        $sql = "INSERT INTO category (name, description, published, dateCreated, dateModified)
-            VALUES (:name, :description, :published, :dateCreated, :dateModified)";
+        $sql = "INSERT INTO category (name, slug, description, published, dateCreated, dateModified)
+            VALUES (:name, :slug, :description, :published, :dateCreated, :dateModified)";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "name" => $model->getName(),
+            "slug" => $model->getSlug(),
             "description" => $model->getDescription(),
             "published" => $model->getPublished(),
             "dateCreated" => $model->getDateCreated(),
@@ -22,6 +23,7 @@ class CategoryMapper extends BaseMapper
         if(!$result) {
             throw new Exception("could not create record");
         }
+        return $this->db->lastInsertId();
     }
 
     public function readAll() 
@@ -50,11 +52,12 @@ class CategoryMapper extends BaseMapper
     }
 
     public function update(Category $model) {
-        $sql = "UPDATE category SET name = :name, description = :description, published = :published, dateCreated = :dateCreated, dateModified = :dateModified
+        $sql = "UPDATE category SET name = :name, slug = :slug, description = :description, published = :published, dateCreated = :dateCreated, dateModified = :dateModified
             WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "id" => $model->getId(),
+            "slug" => $model->getSlug(),
             "name" => $model->getName(),
             "description" => $model->getDescription(),
             "published" => $model->getPublished(),

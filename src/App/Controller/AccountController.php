@@ -6,6 +6,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Model\Account;
 use App\ModelMapper\AccountMapper;
 use App\ModelMapper\SiteDetailMapper;
 
@@ -45,7 +46,22 @@ class AccountController
 
     public function postAccount(RequestInterface $request, ResponseInterface $response, $args)
     {
-        // to follow
+        $this->logger->debug("Area:Account Action:postAccount Client:" . $_SERVER['REMOTE_ADDR']);
+        $data = $request->getParsedBody(); 
+        if (array_key_exists ('active', $data)) {
+            $data['active'] = $data['active'] == "on" ? 1 : 0;
+        }
+        else {
+            $data['active'] = 0;
+        }
+        if ($data['lastLoginDate'] == "") {
+            $data['lastLoginDate'] = null;
+        }
+        $data['dateModified'] = date('Y-m-d H:i:s');
+        $account = new Account($data);
+        $accountMapper = new AccountMapper($this->db);
+        $accountMapper->update($account);
+        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $this->getSiteDetail(), 'account' => $account, 'currentTitle' => 'My Account', 'isAccount' => true));
     }
 
     private function getSiteDetail()

@@ -10,10 +10,10 @@ class Theme
     protected $dateModified;
 
 	public function __construct(array $data) {
-        $this->colorScheme = $data['name'];
-        $this->bannerImage = $data['bannerImage'];
-        $this->backgroundImage = $data['backgroundImage'];
-        $this->dateModified = $data['dateModified'];
+        $this->colorScheme = $data['name'] ?? null;
+        $this->bannerImage = $data['bannerImage'] ?? null;
+        $this->backgroundImage = $data['backgroundImage'] ?? null;
+        $this->dateModified = $data['dateModified'] ?? null;
     }
 
     public function getName() {

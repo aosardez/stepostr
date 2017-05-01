@@ -3,7 +3,7 @@
 // Site Navigation Routes
 $app->get('/', 'SiteNavigationController:getAllPages');
 $app->get('/category/[{slug}]', 'SiteNavigationController:getPagesByCategorySlug');
-$app->get('/search/[{keywords}]', 'SiteNavigationController:getPagesByKeywords');
+$app->get('/search[{keywords}]', 'SiteNavigationController:getPagesByKeywords');
 $app->get('/page/[{slug}]', 'SiteNavigationController:getPageBySlug');
 $app->get('/about', 'SiteNavigationController:getAboutPage');
 
@@ -24,12 +24,16 @@ $app->post('/admin/theme', 'SiteConfigurationController:postTheme');
 // Contributors Management Routes
 $app->get('/admin/contributor', 'ContributorController:getAllContributors');
 $app->get('/admin/contributor/[{id}]', 'ContributorController:getContributorById');
-$app->post('/admin/contributor/[{id}]', 'ContributorController:postContributor');
+$app->get('/admin/contributor-add', 'ContributorController:getContributorForCreate');
+$app->get('/admin/contributor-delete/[{id}]', 'ContributorController:getContributorByIdForDelete');
+$app->post('/admin/contributor-save', 'ContributorController:postContributor');
 
 // Categories Management Routes
 $app->get('/admin/category', 'CategoryController:getAllCategories');
 $app->get('/admin/category/[{id}]', 'CategoryController:getCategoryById');
-$app->post('/admin/category/[{id}]', 'CategoryController:postCategory');
+$app->get('/admin/category-add', 'CategoryController:getCategoryForCreate');
+$app->get('/admin/category-delete/[{id}]', 'CategoryController:getCategoryByIdForDelete');
+$app->post('/admin/category-save', 'CategoryController:postCategory');
 
 // PAges Management Routes
 $app->get('/admin/page', 'PageController:getAllPages');

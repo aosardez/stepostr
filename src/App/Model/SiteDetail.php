@@ -9,9 +9,9 @@ class SiteDetail
 	protected $dateModified;
 
 	public function __construct(array $data) {
-        $this->title = $data['title'];
-        $this->tagline = $data['tagline'];
-        $this->dateModified = $data['dateModified'];
+        $this->title = $data['title'] ?? null;
+        $this->tagline = $data['tagline'] ?? null;
+        $this->dateModified = $data['dateModified'] ?? null;
     }
 
     public function getTitle() {

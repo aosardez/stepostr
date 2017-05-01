@@ -16,7 +16,7 @@ class AboutMapper extends BaseMapper
         }
     }
 
-    public function update(AboutModel $model) {
+    public function update(About $model) {
         $sql = "UPDATE about SET body = :body, dateModified = :dateModified";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([

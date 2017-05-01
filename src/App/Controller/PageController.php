@@ -7,6 +7,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
 use App\ModelMapper\PageMapper;
+use App\ModelMapper\PageDigestMapper;
+use App\ModelMapper\SiteDetailMapper;
 
 class PageController
 {
@@ -24,9 +26,9 @@ class PageController
     public function getAllPages(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
-        $mapper = new PageMapper($this->db);
-        $entity = $mapper->readAll(false);     
-        return $this->view->render($response, 'admin\page.list.html.twig', array('entity' => $entity));
+        $pageDigestsMapper = new PageDigestMapper($this->db);
+        $pageDigests = $pageDigestsMapper->readAll(0);     
+        return $this->view->render($response, 'admin\page.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'pageDigests' => $pageDigests, 'currentTitle' => 'Pages', 'isPages' => true));
     }
 
     public function getPageById(RequestInterface $request, ResponseInterface $response, $args)
@@ -40,5 +42,12 @@ class PageController
     public function postPage(RequestInterface $request, ResponseInterface $response, $args)
     {
         // to follow
+    }
+
+    private function getSiteDetail()
+    {
+        $siteDetailMapper = new SiteDetailMapper($this->db);
+        $siteDetail = $siteDetailMapper->read();
+        return $siteDetail;
     }
 }

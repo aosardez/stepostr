@@ -11,11 +11,11 @@ class PageStep
     protected $image;
 
 	public function __construct(array $data) {
-        $this->id = $data['id'];
-        $this->pageId = $data['pageId'];
-        $this->name = $data['name'];
-        $this->body = $data['body'];
-        $this->image = $data['image'];
+        $this->id = $data['id'] ?? 0;
+        $this->pageId = $data['pageId'] ?? 0;
+        $this->name = $data['name'] ?? null;
+        $this->body = $data['body'] ?? null;
+        $this->image = $data['image'] ?? null;
     }
 
     public function getId() {

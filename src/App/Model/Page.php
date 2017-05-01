@@ -19,19 +19,19 @@ class Page
     protected $dateModified;
 
 	public function __construct(array $data) {
-        $this->id = $data['id'];
-        $this->title = $data['title'];
-        $this->slug = $data['slug'];
-        $this->introduction = $data['introduction'];
-        $this->body = $data['body'];
-        $this->steps = $data['steps'];
-        $this->conclusion = $data['conclusion'];
-        $this->categoryId = $data['categoryId'];
-        $this->authorId = $data['authorId'];
-        $this->updaterId = $data['updaterId'];
-        $this->published = $data['published'];
-        $this->dateCreated = $data['dateCreated'];
-        $this->dateModified = $data['dateModified'];
+        $this->id = $data['id'] ?? 0;
+        $this->title = $data['title'] ?? null;
+        $this->slug = $data['slug'] ?? null;
+        $this->introduction = $data['introduction'] ?? null;
+        $this->body = $data['body'] ?? null;
+        $this->steps = $data['steps'] ?? null;
+        $this->conclusion = $data['conclusion'] ?? null;
+        $this->categoryId = $data['categoryId'] ?? 0;
+        $this->authorId = $data['authorId'] ?? 0;
+        $this->updaterId = $data['updaterId'] ?? 0;
+        $this->published = $data['published'] ?? null;
+        $this->dateCreated = $data['dateCreated'] ?? null;
+        $this->dateModified = $data['dateModified'] ?? null;
     }
 
     public function getId() {

@@ -1,8 +1,46 @@
-contributor.html.twig
+{% extends "admin/base.html.twig" %}
 
-        <ol>
-            {% for key, value in _context  %}
-              <li>{{ key }}</li>
-            {% endfor %}
-        </ol>  
-        {{ dump(entity) }}
+{% block content %}
+    <form class="bootstrap-form-with-validation" method="post" action="/admin/contributor-save">
+        <h2>Contributor Details</h2>
+        <p> </p>
+        <input type="hidden" name="id" value="{{ contributor.getId() }}">
+        <input type="hidden" name="lastLoginDate" value="{{ contributor.getLastLoginDate() }}">
+        <input type="hidden" name="dateCreated" value="{{ contributor.getDateCreated() }}">
+	    <div class="form-group">
+	        <label class="control-label" for="username">Username: </label>
+	        <input class="form-control" type="text" name="username" required maxlength="20" value="{{ contributor.getUsername() }}">
+	    </div>
+	    <div class="form-group">
+	        <label class="control-label" for="password">Password: </label>
+	        <input class="form-control" type="password" name="password" required maxlength="50" value="{{ contributor.getPassword() }}">
+	    </div>
+	    <div class="form-group">
+	        <label class="control-label" for="displayName">Display Name: </label>
+	        <input class="form-control" type="text" name="displayName" required maxlength="100" value="{{ contributor.getDisplayName() }}">
+	    </div>
+	    <div class="form-group">
+	        <div class="checkbox">
+	            <label class="control-label">
+	                <input type="checkbox" name="active" {% if contributor.getActive() %}checked{% endif %}><strong>Active</strong></label>
+	        </div>
+	    </div>
+        <div class="form-group">
+            <label class="control-label" for="text">Last Login Date:</label>
+            <p class="form-static-control">{{ contributor.getLastLoginDate()|date("F d, Y g:i A") }}</p>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="text">Date Created:</label>
+            <p class="form-static-control">{{ contributor.getDateCreated()|date("F d, Y g:i A") }}</p>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="text">Date Modified:</label>
+            <p class="form-static-control">{{ contributor.getDateModified()|date("F d, Y g:i A") }}</p>
+            <p> </p>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default" type="submit">Save </button><span> </span>
+            <button class="btn btn-default" type="reset">Cancel</button>
+        </div>
+	</form>
+{% endblock %}

@@ -7,15 +7,18 @@ use App\ModelMapper\BaseMapper;
 
 class PageDigestMapper extends BaseMapper
 {
-    public function readAll() 
+    public function readAll($publishedOnly) 
     {
-        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, p.published, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id
-            WHERE p.published = 1
+            WHERE p.published = 1 OR 0 = :publishedOnly
             ORDER BY p.dateCreated DESC";
-        $stmt = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $result = $stmt->execute([
+            "publishedOnly" => $publishedOnly
+        ]);
         $results = [];
         while($row = $stmt->fetch()) {
             $results[] = new PageDigest($row);
@@ -25,7 +28,7 @@ class PageDigestMapper extends BaseMapper
 
     public function readAllByCategory($slug) 
     {
-        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, p.published, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id
@@ -44,7 +47,7 @@ class PageDigestMapper extends BaseMapper
 
     public function readAllByKeywords($keywords) 
     {
-        $sql = "SELECT DISTINCT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+        $sql = "SELECT DISTINCT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, p.published, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id
@@ -64,7 +67,7 @@ class PageDigestMapper extends BaseMapper
 
     public function readBySlug($slug) 
     {
-        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
+        $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, p.published, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id

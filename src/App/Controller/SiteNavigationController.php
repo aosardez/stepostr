@@ -29,7 +29,7 @@ class SiteNavigationController
     {
         $this->logger->debug("Area:Navigation Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
         $pageMapper = new PageDigestMapper($this->db);
-        $pages = $pageMapper->readAll();     
+        $pages = $pageMapper->readAll(1);     
         return $this->view->render($response, 'index.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $this->getCategories(), 'pages' => $pages));
     }
 

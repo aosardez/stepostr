@@ -8,8 +8,8 @@ class About
 	protected $dateModified;
 
 	public function __construct(array $data) {
-        $this->body = $data['body'];
-        $this->dateModified = $data['dateModified'];
+        $this->body = $data['body'] ?? null;
+        $this->dateModified = $data['dateModified'] ?? null;
     }
 
     public function getBody() {
