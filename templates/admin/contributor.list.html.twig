@@ -23,7 +23,7 @@
 		                    <td>{{ contibutor.getUsername() }}</td>
 		                    <td>{{ contibutor.getDisplayName() }}</td>
 		                    <td>{{ contibutor.getActive() ? 'yes' : 'no' }}</td>
-		                    <td>{{ contibutor.getLastLoginDate()|date("F d, Y g:i A") }}</td>
+		                    <td>{% if contibutor.getLastLoginDate() is not empty %}{{ contibutor.getLastLoginDate()|date("F d, Y g:i A") }}{% endif %}</td>
 		                    <td>{{ contibutor.getDateCreated()|date("F d, Y g:i A") }}</td>
 		                    <td>{{ contibutor.getDateModified()|date("F d, Y g:i A") }}</td>	                    
 		                    <td>
