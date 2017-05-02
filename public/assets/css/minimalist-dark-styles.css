@@ -111,3 +111,7 @@ a:focus{
   background-color:#272b2e;
   color:#ffffff;
 }
+
+img{
+  max-width: 950px;
+}

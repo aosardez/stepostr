@@ -35,7 +35,15 @@ $app->get('/admin/category-edit/[{id}]', 'CategoryController:getCategoryById');
 $app->get('/admin/category-delete/[{id}]', 'CategoryController:getCategoryByIdForDelete');
 $app->post('/admin/category-save', 'CategoryController:postCategory');
 
-// PAges Management Routes
+// Pages Management Routes
 $app->get('/admin/page', 'PageController:getAllPages');
-$app->get('/admin/page/[{id}]', 'PageController:getPageById');
-$app->post('/admin/page/[{id}]', 'PageController:postPage');
+$app->get('/admin/page-add', 'PageController:getPageForCreate');
+$app->get('/admin/page-edit/[{id}]', 'PageController:getPageById');
+$app->get('/admin/page-delete/[{id}]', 'PageController:getPageByIdForDelete');
+$app->post('/admin/page-save', 'PageController:postPage');
+
+// Page Steps Management Routes
+$app->get('/admin/pagestep-add[{args}]', 'PageStepController:getPageStepForCreate');
+$app->get('/admin/pagestep-edit[{args}]', 'PageStepController:getPageStepById');
+$app->get('/admin/pagestep-delete[{args}]', 'PageStepController:getPageStepByIdForDelete');
+$app->post('/admin/pagestep-save', 'PageStepController:postPageStep');

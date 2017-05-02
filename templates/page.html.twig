@@ -11,6 +11,7 @@
 	    {% for step in page.getSteps() %}
 	        <h4>Step {{ stepCtr }}: {{ step.getName() }}</h4>
 	        <p>{{ step.body() }}</p>
+	        <p><img src="{{ step.getImagePath() }}"></P>
         	{% set stepCtr = stepCtr + 1 %}
 	    {% endfor %}
 	    <h4>Conclusion</h4>

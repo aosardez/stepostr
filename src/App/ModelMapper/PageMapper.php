@@ -10,11 +10,12 @@ class PageMapper extends BaseMapper
 {
     public function create(Page $model)
     {
-        $sql = "INSERT INTO page (title, introduction, body, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified)
-            VALUES (:title, :introduction, :body, :conclusion, :categoryId, :authorId, :updaterId, :published, :dateCreated, :dateModified)";
+        $sql = "INSERT INTO page (title, slug, introduction, body, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified)
+            VALUES (:title, :slug, :introduction, :body, :conclusion, :categoryId, :authorId, :updaterId, :published, :dateCreated, :dateModified)";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "title" => $model->getTitle(),
+            "slug" => $model->getSlug(),
             "introduction" => $model->getIntroduction(),
             "body" => $model->getBody(),
             "conclusion" => $model->getConclusion(),
@@ -29,11 +30,7 @@ class PageMapper extends BaseMapper
             throw new Exception("could not create record");
         }
         $id = $this->db->lastInsertId();
-        foreach ($model->getSteps() as $step) {
-            $stepMapper = new PageStepMapper($this->db);
-            $step->setPageId($id);
-            $stepMapper->create($step);
-        }
+        return $id;
     }
 
     public function readAll($includeSteps) 
@@ -75,13 +72,14 @@ class PageMapper extends BaseMapper
         }
     }
 
-    public function update(PageModel $model) {
-        $sql = "UPDATE page SET title = :title, introduction = :introduction, body = :body, conclusion = :conclusion, categoryId = :categoryId, authorId = :authorId, updaterId = :updaterId, dateCreated = :dateCreated, dateModified = :dateModified
+    public function update(Page $model) {
+        $sql = "UPDATE page SET title = :title, slug = :slug, introduction = :introduction, body = :body, conclusion = :conclusion, categoryId = :categoryId, authorId = :authorId, updaterId = :updaterId, published = :published, dateCreated = :dateCreated, dateModified = :dateModified
             WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "id" => $model->getId(),
             "title" => $model->getTitle(),
+            "slug" => $model->getSlug(),
             "introduction" => $model->getIntroduction(),
             "body" => $model->getBody(),
             "conclusion" => $model->getConclusion(),
@@ -94,13 +92,6 @@ class PageMapper extends BaseMapper
         ]);
         if(!$result) {
             throw new Exception("could not update record");
-        }
-        $id = $model->getId();
-        $stepMapper = new PageStepMapper($this->db);
-        $stepMapper->deleteAllUnderPage($id);
-        foreach ($model->getSteps() as $step) {            
-            $step->setPageId($id);
-            $stepMapper->create($step);
         }
     }
 

@@ -49,3 +49,6 @@ div#menuContent{
   margin-right:auto;
 }
 
+img{
+  max-width: 950px;
+}

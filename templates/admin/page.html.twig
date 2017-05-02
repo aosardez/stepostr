@@ -1,8 +1,118 @@
-page.html.twig
+{% extends "admin/base.html.twig" %}
 
-        <ol>
-            {% for key, value in _context  %}
-              <li>{{ key }}</li>
-            {% endfor %}
-        </ol>  
-        {{ dump(entity) }}
+{% block content %}
+    <form class="bootstrap-form-with-validation" method="post" action="/admin/page-save">
+        <h2>Page Details</h2>
+        <p> </p>
+        <input type="hidden" name="id" value="{{ page.getId() }}">
+        <input type="hidden" name="authorId" value="{{ page.getAuthorId() }}">
+        <input type="hidden" name="updaterId" value="{{ page.getUpdaterId() }}">
+        <input type="hidden" name="dateCreated" value="{{ page.getDateCreated() }}">
+        <div class="form-group">
+            <label class="control-label" for="title">Name: </label>
+            <input class="form-control" type="text" name="title" required maxlength="100" value="{{ page.getTitle() }}">
+        </div>
+        <div class="form-group">
+            <label class="control-label">Slug: </label><span> </span>
+            <label class="control-label">{{ page.getSlug() }}</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="introduction">Introduction: </label>
+            <textarea class="form-control" rows="7" name="introduction" required>{{ page.getIntroduction() }}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="body">Body: </label>
+            <textarea class="form-control" rows="5" name="body">{{ page.getBody() }}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="body">Steps: </label>
+            {% if page.getId() > 0 %}
+            	<a href="/admin/pagestep-add?order={{ page.getSteps()|length }}&pageId={{ page.getId() }}" class="btn btn-default">Add New</a>
+				<div class="table-responsive">
+		            <table class="table">
+		                <thead>
+		                    <tr>
+		                        <th>Name</th>
+		                        <th>Order</th>
+		                        <th>Actions </th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+			            	{% for pageStep in page.getSteps()  %}
+			                    <tr>
+			                        <td>{{ pageStep.getName() }}</td>
+			                        <td>{{ pageStep.getOrder() }}</td>
+		                            <td>
+		                                <a href="/admin/pagestep-edit?id={{ pageStep.getId() }}&pageId={{ page.getId() }}" class="btn btn-default">Edit</a>
+		                                <a href="#" data-href="/admin/pagestep-delete?id={{ pageStep.getId() }}&pageId={{ page.getId() }}" data-toggle="modal" data-target="#confirm-delete" class="btn btn-default">Delete</a>
+		                            </td>
+			                    </tr>
+			            	{% endfor %}
+		                </tbody>
+		            </table>
+		        </div>
+		    {% else %}
+		    	<label class="control-label">You need to save the page first before you can create steps.</label>
+	        {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="conclusion">Conclusion: </label>
+            <textarea class="form-control" rows="5" name="conclusion">{{ page.getConclusion() }}</textarea>
+        </div>
+        <select class="form-control" name="categoryId">
+            <optgroup label="Select category">
+                {% for category in categories %}
+                	<option value="{{ category.getId() }}" {% if page.getCategoryId == category.getId() %}selected{% endif %}>{{ category.getName() }}</option>
+                {% endfor %}
+            </optgroup>
+        </select>
+        <div class="form-group">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" name="published"  {% if page.getPublished() %}checked{% endif %}><strong>Published</strong></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Created By: </label><span> </span>
+            <label class="control-label">{{ pageDigest.getAuthorName() }}</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Date Created: </label><span> </span>
+            <label class="control-label">{{ page.getDateCreated()|date("F d, Y g:i A") }}</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Modified By: </label><span> </span>
+            <label class="control-label">{{ pageDigest.getUpdaterName() }}</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Date Modified: </label><span> </span>
+            <label class="control-label">{{ page.getDateModified()|date("F d, Y g:i A") }}</label>
+        </div>
+        <div class="form-group">
+	        <button class="btn btn-default" type="submit">Save </button><span> </span>
+	        <button class="btn btn-default" type="reset">Reset </button>
+        </div>
+    </form>
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">            
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Delete Page Step</h4>
+                </div>            
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the page step?</p>
+                </div>                
+                <div class="modal-footer">
+                    <a class="btn btn-danger btn-ok">Delete</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+    </script>
+{% endblock %}

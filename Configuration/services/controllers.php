@@ -49,3 +49,11 @@ $container['PageController'] = function($container){
         $container->get('db')
     );
 };
+
+$container['PageStepController'] = function($container){
+    return new \App\Controller\PageStepController(
+        $container->get('logger'),
+        $container->get('view'),
+        $container->get('db')
+    );
+};

@@ -32,6 +32,10 @@ class AccountController extends BaseController
     {
         $this->logger->debug("Area:Account Action:postAccount Client:" . $_SERVER['REMOTE_ADDR']);
         $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        if ($adminSession == null) {
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        }
         $accessDenied = true;
         $accountMapper = new AccountMapper($this->db);
         $data = $request->getParsedBody(); 

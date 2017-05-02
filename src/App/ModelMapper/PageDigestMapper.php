@@ -65,16 +65,17 @@ class PageDigestMapper extends BaseMapper
         return $results;
     }
 
-    public function readBySlug($slug) 
+    public function readBySlug($slug, $publishedOnly) 
     {
         $sql = "SELECT p.id, p.title, p.slug, p.introduction, c.name AS categoryName, c.slug AS categorySlug, p.published, a.displayName AS authorName, u.displayName AS updaterName, p.dateCreated, p.dateModified FROM page p
             LEFT JOIN category c ON p.categoryId = c.id
             LEFT JOIN account a ON p.authorId = a.id
             LEFT JOIN account u ON p.updaterId = u.id
-            WHERE p.published = 1 AND p.slug = :slug";
+            WHERE p.slug = :slug AND (p.published = 1 OR 0 = :publishedOnly)";
         $stmt = $this->db->prepare($sql);
-        $result = $stmt->execute([
-            "slug" => $slug
+        $result = $stmt->execute([            
+            "slug" => $slug,
+            "publishedOnly" => $publishedOnly
         ]);
         if($result) {
             return new PageDigest($stmt->fetch());

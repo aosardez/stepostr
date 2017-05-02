@@ -30,7 +30,7 @@ class SiteNavigationController extends BaseController
         $pages = $pageMapper->readAllByCategory($args['slug']);
         $categories = $this->getCategories();
         $category = $this->getCategoryBySlug($categories, $args['slug']);
-        return $this->view->render($response, 'category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'theme' => $this->getTheme(), 'categories' => $categories, 'navSession' => $this->getNavSession($category->getName(), 'Categories', $category->getName()), 'pages' => $pages, 'listName' => $category->getName()));
+        return $this->view->render($response, 'category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'theme' => $this->getTheme(), 'categories' => $categories, 'navSession' => $this->getNavSession($category->getName(), 'Categories', $category->getName()), 'pages' => $pages, 'category' => $category));
     }
 
     public function getPagesByKeywords(RequestInterface $request, ResponseInterface $response, $args)
@@ -47,8 +47,8 @@ class SiteNavigationController extends BaseController
         $pageMapper = new PageMapper($this->db);
         $page = $pageMapper->read($args['slug']);
         $pageDigestMapper = new PageDigestMapper($this->db);
-        $pageDigest = $pageDigestMapper->readBySlug($args['slug']);
-        return $this->view->render($response, 'page.html.twig', array('siteDetail' => $this->getSiteDetail(), 'theme' => $this->getTheme(), 'categories' => $this->getCategories(), 'navSession' => $this->getNavSession($pageDigest->getTitle(), 'Pages', $pageDigest->getCategoryName()), 'page' => $page));
+        $pageDigest = $pageDigestMapper->readBySlug($args['slug'], 1);
+        return $this->view->render($response, 'page.html.twig', array('siteDetail' => $this->getSiteDetail(), 'theme' => $this->getTheme(), 'categories' => $this->getCategories(), 'navSession' => $this->getNavSession($pageDigest->getTitle(), 'Pages', $pageDigest->getCategoryName()), 'pageDigest' => $pageDigest, 'page' => $page));
     }
 
     public function getAboutPage(RequestInterface $request, ResponseInterface $response, $args)
