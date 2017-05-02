@@ -20,7 +20,7 @@ class SiteConfigurationController extends BaseController
         $this->logger->debug("Area:Configuration Action:getAbout Client:" . $_SERVER['REMOTE_ADDR']);   
         $aboutMapper = new AboutMapper($this->db);
         $about = $aboutMapper->read();     
-        return $this->view->render($response, 'admin\about.html.twig', array('siteDetail' => $this->getSiteDetail(), 'about' => $about, 'currentTitle' => 'About Site', 'isAbout' => true));
+        return $this->view->render($response, 'admin\about.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('About Site', 'SiteConfiguration', 'About'), 'about' => $about));
     }
 
     public function postAbout(RequestInterface $request, ResponseInterface $response, $args)
@@ -34,7 +34,7 @@ class SiteConfigurationController extends BaseController
         $about = new About($data);
         $aboutMapper = new AboutMapper($this->db);
         $aboutMapper->update($about); 
-        return $this->view->render($response, 'admin\about.html.twig', array('siteDetail' => $siteDetail, 'about' => $about, 'currentTitle' => 'About Site', 'isAbout' => true));
+        return $this->view->render($response, 'admin\about.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('About site', 'SiteConfiguration', 'About'), 'about' => $about, 'currentTitle' => 'About Site', 'isAbout' => true));
     }
 
     public function getTheme(RequestInterface $request, ResponseInterface $response, $args)
@@ -42,7 +42,7 @@ class SiteConfigurationController extends BaseController
         $this->logger->debug("Area:Configuration Action:getTheme Client:" . $_SERVER['REMOTE_ADDR']);   
         $themeMapper = new ThemeMapper($this->db);
         $theme = $themeMapper->read();     
-        return $this->view->render($response, 'admin\theme.html.twig', array('siteDetail' => $this->getSiteDetail(), 'theme' => $theme, 'currentTitle' => 'Site Theme', 'isTheme' => true));
+        return $this->view->render($response, 'admin\theme.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Site Theme', 'SiteConfiguration', 'Theme')));
     }
 
     public function postTheme(RequestInterface $request, ResponseInterface $response, $args)

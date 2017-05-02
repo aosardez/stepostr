@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ siteDetail.getTitle() }}'s Admin Portal{% if currentTitle %} - {% endif %}{{ currentTitle }}</title>
+    <title>{{ siteDetail.getTitle() }}'s Admin Portal{% if navSession.getPageTitle() %} - {% endif %}{{ navSession.getPageTitle() }}</title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/css/styles.css">
     <script src="../../assets/js/jquery.min.js"></script>
@@ -24,16 +24,16 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav">
-                        <li {% if isAccount %}class="active"{% endif %} role="presentation"><a href="/admin/account"><i class="glyphicon glyphicon-lock"></i> My Account</a></li>
+                        <li {% if navSession.getSection() == "Account" %}class="active"{% endif %} role="presentation"><a href="/admin/account"><i class="glyphicon glyphicon-lock"></i> My Account</a></li>
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#"><i class="glyphicon glyphicon-cog"></i> Site Configuration<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li {% if isAbout %}class="active"{% endif %} role="presentation"><a href="/admin/about"><i class="glyphicon glyphicon-info-sign"></i> About Site</a></li>
-                                <li {% if isTheme %}class="active"{% endif %} role="presentation"><a href="/admin/theme"><i class="glyphicon glyphicon-star"></i> Site Theme</a></li>
+                                <li {% if navSession.getSection() == "SiteConfiguration" and navSession.getSubSection() == "About" %}class="active"{% endif %} role="presentation"><a href="/admin/about"><i class="glyphicon glyphicon-info-sign"></i> About Site</a></li>
+                                <li {% if navSession.getSection() == "SiteConfiguration" and navSession.getSubSection() == "Theme" %}class="active"{% endif %} role="presentation"><a href="/admin/theme"><i class="glyphicon glyphicon-star"></i> Site Theme</a></li>
                             </ul>
                         </li>
-                        <li {% if isContributors %}class="active"{% endif %} role="presentation"><a href="/admin/contributor"><i class="glyphicon glyphicon-user"></i> Contributors </a></li>
-                        <li {% if isCategories %}class="active"{% endif %} role="presentation"><a href="/admin/category"><i class="glyphicon glyphicon-tags"></i> Categories </a></li>
-                        <li {% if isPages %}class="active"{% endif %} role="presentation">
+                        <li {% if navSession.getSection() == "Contributors" %}class="active"{% endif %} role="presentation"><a href="/admin/contributor"><i class="glyphicon glyphicon-user"></i> Contributors </a></li>
+                        <li {% if navSession.getSection() == "Categories" %}class="active"{% endif %} role="presentation"><a href="/admin/category"><i class="glyphicon glyphicon-tags"></i> Categories </a></li>
+                        <li {% if navSession.getSection() == "Pages" %}class="active"{% endif %} role="presentation">
                             <a href="/admin/page"> <i class="glyphicon glyphicon-file"></i> Pages</a>
                         </li>
                         <li role="presentation"><a href="/admin"><i class="glyphicon glyphicon-off"></i> Logout </a></li>

@@ -5,7 +5,6 @@ namespace App\Controller;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Slim\Views\Twig;
 use App\Controller\BaseController;
 use App\Model\Account;
 use App\ModelMapper\AccountMapper;
@@ -31,7 +30,7 @@ class AccountController extends BaseController
         $this->logger->debug("Area:Account Action:getAccount Client:" . $_SERVER['REMOTE_ADDR']);
         $accountMapper = new AccountMapper($this->db);
         $account = $accountMapper->read($_SESSION["accountId"]);
-        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $this->getSiteDetail(), 'account' => $account, 'currentTitle' => 'My Account', 'isAccount' => true));
+        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('My Account', 'Account', null), 'account' => $account));
     }    
 
     public function postAccount(RequestInterface $request, ResponseInterface $response, $args)
@@ -51,6 +50,6 @@ class AccountController extends BaseController
         $account = new Account($data);
         $accountMapper = new AccountMapper($this->db);
         $accountMapper->update($account);
-        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $this->getSiteDetail(), 'account' => $account, 'currentTitle' => 'My Account', 'isAccount' => true));
+        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('My Account', 'Account', null), 'account' => $account));
     }
 }

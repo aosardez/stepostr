@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Model\NavSession;
 use App\ModelMapper\SiteDetailMapper;
 
 abstract class BaseController
@@ -24,5 +25,12 @@ abstract class BaseController
         $siteDetailMapper = new SiteDetailMapper($this->db);
         $siteDetail = $siteDetailMapper->read();
         return $siteDetail;
+    }
+
+    protected function getNavSession($pageTitle, $section, $subSection)
+    {
+        $data = array('pageTitle' => $pageTitle, 'section' => $section, 'subSection' => $subSection);
+        $navSession = new NavSession($data);
+        return $navSession;
     }
 }

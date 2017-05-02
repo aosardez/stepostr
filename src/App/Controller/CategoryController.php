@@ -5,7 +5,6 @@ namespace App\Controller;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Slim\Views\Twig;
 use App\Controller\BaseController;
 use App\Model\Category;
 use App\ModelMapper\CategoryMapper;
@@ -18,7 +17,7 @@ class CategoryController extends BaseController
         $this->logger->debug("Area:Category Action:getAllCategories Client:" . $_SERVER['REMOTE_ADDR']);
         $categoriesMapper = new CategoryMapper($this->db);
         $categories = $categoriesMapper->readAll();      
-        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $categories, 'currentTitle' => 'Categories', 'isCategories' => true));
+        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Categories', 'Categories', null), 'categories' => $categories));
     }
 
     public function getCategoryForCreate(RequestInterface $request, ResponseInterface $response, $args)
@@ -26,7 +25,7 @@ class CategoryController extends BaseController
         $this->logger->debug("Area:Category Action:getCategoryForCreate Client:" . $_SERVER['REMOTE_ADDR']);
         $data = array('id' => 0);
         $category = new Category($data);
-        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'category' => $category, 'currentTitle' => 'Add Category', 'isCategories' => true));
+        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Add Category', 'Categories', null), 'category' => $category));
     }
 
     public function getCategoryById(RequestInterface $request, ResponseInterface $response, $args)
@@ -34,7 +33,7 @@ class CategoryController extends BaseController
         $this->logger->debug("Area:Category Action:getCategoryById Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['id']);
         $categoryMapper = new CategoryMapper($this->db);
         $category = $categoryMapper->read($args['id']);
-        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'category' => $category, 'currentTitle' => 'Edit Category', 'isCategories' => true));
+        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Edit Category', 'Categories', null), 'category' => $category));
     }
 
     public function getCategoryByIdForDelete(RequestInterface $request, ResponseInterface $response, $args)
@@ -43,7 +42,7 @@ class CategoryController extends BaseController
         $categoryMapper = new CategoryMapper($this->db);
         $categoryMapper->delete($args['id']);     
         $categories = $categoryMapper->readAll();        
-        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $categories, 'currentTitle' => 'Categories', 'isCategories' => true));
+        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Categories', 'Categories', null), 'categories' => $categories));
     }
 
     public function postCategory(RequestInterface $request, ResponseInterface $response, $args)
@@ -70,6 +69,6 @@ class CategoryController extends BaseController
             $id = $categoryMapper->create($category);
             $category->setId($id);
         }
-        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'category' => $category, 'currentTitle' => 'Edit Category', 'isCategories' => true));     
+        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Edit Categories', 'Categories', null), 'category' => $category));     
     }
 }

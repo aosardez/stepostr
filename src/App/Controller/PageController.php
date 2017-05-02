@@ -15,10 +15,10 @@ class PageController extends BaseController
 {
     public function getAllPages(RequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->debug("Area:Contributors Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
+        $this->logger->debug("Area:Pages Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
         $pageDigestsMapper = new PageDigestMapper($this->db);
         $pageDigests = $pageDigestsMapper->readAll(0);     
-        return $this->view->render($response, 'admin\page.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'pageDigests' => $pageDigests, 'currentTitle' => 'Pages', 'isPages' => true));
+        return $this->view->render($response, 'admin\page.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Pages', 'Pages', null), 'pageDigests' => $pageDigests));
     }
 
     public function getPageById(RequestInterface $request, ResponseInterface $response, $args)
