@@ -17,7 +17,7 @@ class AccountController extends BaseController
         $this->logger->debug("Area:Account Action:getLogin Client:" . $_SERVER['REMOTE_ADDR']);           
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
-        return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Login', null, null), 'adminSession' => $adminSession));
+        return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Login', null, null), 'adminSession' => $adminSession));
     }
 
     public function getLogout(RequestInterface $request, ResponseInterface $response, $args)
@@ -25,7 +25,7 @@ class AccountController extends BaseController
         $this->logger->debug("Area:Account Action:getLogout Client:" . $_SERVER['REMOTE_ADDR']);           
         session_unset();
         $siteDetail = $this->getSiteDetail();
-        return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Login', null, null)));
+        return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Login', null, null)));
     }
 
     public function postLogin(RequestInterface $request, ResponseInterface $response, $args)
@@ -43,10 +43,10 @@ class AccountController extends BaseController
             $adminSession = $this->getAdminSession();
             $account->setLastLoginDate(date('Y-m-d H:i:s'));
             $accountMapper->update($account);
-            return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('My Account', 'Account', null), 'adminSession' => $adminSession, 'account' => $account));  
+            return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('My Account', 'Account', null), 'adminSession' => $adminSession, 'account' => $account));  
         }
         else {            
-            return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Login', null, null), 'accessDenied' => $accessDenied));
+            return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Login', null, null), 'accessDenied' => $accessDenied));
         }
     }
 
@@ -56,11 +56,11 @@ class AccountController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $accountMapper = new AccountMapper($this->db);
         $account = $accountMapper->read($_SESSION["accountId"]);
-        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('My Account', 'Account', null), 'adminSession' => $adminSession, 'account' => $account));
+        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('My Account', 'Account', null), 'adminSession' => $adminSession, 'account' => $account));
     }    
 
     public function postAccount(RequestInterface $request, ResponseInterface $response, $args)
@@ -69,7 +69,7 @@ class AccountController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = $request->getParsedBody(); 
         if (array_key_exists ('active', $data)) {
@@ -85,6 +85,6 @@ class AccountController extends BaseController
         $account = new Account($data);
         $accountMapper = new AccountMapper($this->db);
         $accountMapper->update($account);
-        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('My Account', 'Account', null), 'adminSession' => $adminSession, 'account' => $account));
+        return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('My Account', 'Account', null), 'adminSession' => $adminSession, 'account' => $account));
     }
 }

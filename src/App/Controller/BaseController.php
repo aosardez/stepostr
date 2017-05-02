@@ -7,6 +7,7 @@ use Slim\Views\Twig;
 use App\Model\AdminSession;
 use App\Model\NavSession;
 use App\ModelMapper\SiteDetailMapper;
+use App\ModelMapper\ThemeMapper;
 
 abstract class BaseController
 {
@@ -26,6 +27,13 @@ abstract class BaseController
         $siteDetailMapper = new SiteDetailMapper($this->db);
         $siteDetail = $siteDetailMapper->read();
         return $siteDetail;
+    }
+
+    protected function getTheme()
+    {
+        $themeMapper = new ThemeMapper($this->db);
+        $theme = $themeMapper->read();     
+        return $theme;
     }
 
     protected function getNavSession($pageTitle, $section, $subSection)

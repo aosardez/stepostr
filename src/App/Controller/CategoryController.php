@@ -18,11 +18,11 @@ class CategoryController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $categoriesMapper = new CategoryMapper($this->db);
         $categories = $categoriesMapper->readAll();      
-        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Categories', 'Categories', null), 'adminSession' => $adminSession, 'categories' => $categories));
+        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Categories', 'Categories', null), 'adminSession' => $adminSession, 'categories' => $categories));
     }
 
     public function getCategoryForCreate(RequestInterface $request, ResponseInterface $response, $args)
@@ -31,11 +31,11 @@ class CategoryController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = array('id' => 0);
         $category = new Category($data);
-        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Add Category', 'Categories', null), 'adminSession' => $adminSession, 'category' => $category));
+        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Add Category', 'Categories', null), 'adminSession' => $adminSession, 'category' => $category));
     }
 
     public function getCategoryById(RequestInterface $request, ResponseInterface $response, $args)
@@ -44,11 +44,11 @@ class CategoryController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $categoryMapper = new CategoryMapper($this->db);
         $category = $categoryMapper->read($args['id']);
-        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Edit Category', 'Categories', null), 'adminSession' => $adminSession, 'category' => $category));
+        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Edit Category', 'Categories', null), 'adminSession' => $adminSession, 'category' => $category));
     }
 
     public function getCategoryByIdForDelete(RequestInterface $request, ResponseInterface $response, $args)
@@ -57,12 +57,12 @@ class CategoryController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $categoryMapper = new CategoryMapper($this->db);
         $categoryMapper->delete($args['id']);     
         $categories = $categoryMapper->readAll();        
-        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Categories', 'Categories', null), 'adminSession' => $adminSession, 'categories' => $categories));
+        return $this->view->render($response, 'admin\category.list.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Categories', 'Categories', null), 'adminSession' => $adminSession, 'categories' => $categories));
     }
 
     public function postCategory(RequestInterface $request, ResponseInterface $response, $args)
@@ -71,7 +71,7 @@ class CategoryController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = $request->getParsedBody();
         $data['slug'] = str_replace(' ', '-', strtolower($data['name']));
@@ -94,6 +94,6 @@ class CategoryController extends BaseController
             $id = $categoryMapper->create($category);
             $category->setId($id);
         }
-        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Edit Categories', 'Categories', null), 'adminSession' => $adminSession, 'category' => $category));     
+        return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Edit Categories', 'Categories', null), 'adminSession' => $adminSession, 'category' => $category));     
     }
 }

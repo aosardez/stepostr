@@ -19,11 +19,11 @@ class PageController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $pageDigestsMapper = new PageDigestMapper($this->db);
         $pageDigests = $pageDigestsMapper->readAll(0);     
-        return $this->view->render($response, 'admin\page.list.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Pages', 'Pages', null), 'adminSession' => $adminSession, 'pageDigests' => $pageDigests));
+        return $this->view->render($response, 'admin\page.list.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Pages', 'Pages', null), 'adminSession' => $adminSession, 'pageDigests' => $pageDigests));
     }
 
     public function getPageById(RequestInterface $request, ResponseInterface $response, $args)

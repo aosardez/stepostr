@@ -17,7 +17,7 @@ $app->post('/admin/account', 'AccountController:postAccount');
 
 // Site Configuration Routes
 $app->get('/admin/about', 'SiteConfigurationController:getAbout');
-$app->get('/admin/theme', 'SiteConfigurationController:getTheme');
+$app->get('/admin/theme', 'SiteConfigurationController:getThemeInfo');
 $app->post('/admin/about', 'SiteConfigurationController:postAbout');
 $app->post('/admin/theme', 'SiteConfigurationController:postTheme');
 
