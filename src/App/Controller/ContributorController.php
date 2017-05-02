@@ -15,39 +15,64 @@ class ContributorController extends BaseController
     public function getAllContributors(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:getAllContributors Client:" . $_SERVER['REMOTE_ADDR']);
+        $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        if ($adminSession == null || !$adminSession->getIsAdmin()) {
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        }
         $contributorsMapper = new AccountMapper($this->db);
         $contributors = $contributorsMapper->readAll();     
-        return $this->view->render($response, 'admin\contributor.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Contributors', 'Contributors', null), 'contributors' => $contributors));
+        return $this->view->render($response, 'admin\contributor.list.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Contributors', 'Contributors', null), 'adminSession' => $adminSession, 'contributors' => $contributors));
     }
 
     public function getContributorForCreate(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:getContributorForCreate Client:" . $_SERVER['REMOTE_ADDR']);
+        $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        if ($adminSession == null || !$adminSession->getIsAdmin()) {
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        }
         $data = array('id' => 0);
         $contributor = new Account($data);
-        return $this->view->render($response, 'admin\contributor.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Add Contributor', 'Contributors', null), 'contributor' => $contributor));
+        return $this->view->render($response, 'admin\contributor.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Add Contributor', 'Contributors', null), 'adminSession' => $adminSession, 'contributor' => $contributor));
     }
 
     public function getContributorById(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:getContributorById Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['id']);
+        $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        if ($adminSession == null || !$adminSession->getIsAdmin()) {
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        }
         $contributorMapper = new AccountMapper($this->db);
         $contributor = $contributorMapper->read($args['id']);     
-        return $this->view->render($response, 'admin\contributor.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Edit Contributor', 'Contributors', null), 'contributor' => $contributor));
+        return $this->view->render($response, 'admin\contributor.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Edit Contributor', 'Contributors', null), 'adminSession' => $adminSession, 'contributor' => $contributor));
     }
 
     public function getContributorByIdForDelete(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:getContributorByIdForDelete Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['id']);
+        $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        if ($adminSession == null || !$adminSession->getIsAdmin()) {
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        }
         $contributorsMapper = new AccountMapper($this->db);
         $contributorsMapper->delete($args['id']);     
         $contributors = $contributorsMapper->readAll();     
-        return $this->view->render($response, 'admin\contributor.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Contributors', 'Contributors', null), 'contributors' => $contributors));
+        return $this->view->render($response, 'admin\contributor.list.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Contributors', 'Contributors', null), 'adminSession' => $adminSession, 'contributors' => $contributors));
     }
 
     public function postContributor(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:postContributor Client:" . $_SERVER['REMOTE_ADDR']);
+        $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        if ($adminSession == null || !$adminSession->getIsAdmin()) {
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        }
         $data = $request->getParsedBody(); 
         if (array_key_exists ('active', $data)) {
             $data['active'] = $data['active'] == "on" ? 1 : 0;
@@ -71,6 +96,6 @@ class ContributorController extends BaseController
             $id = $contributorMapper->create($contributor);
             $contributor->setId($id);
         }
-        return $this->view->render($response, 'admin\contributor.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Edit Contributor', 'Contributors', null), 'contributor' => $contributor));        
+        return $this->view->render($response, 'admin\contributor.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Edit Contributor', 'Contributors', null), 'adminSession' => $adminSession, 'contributor' => $contributor));        
     }
 }

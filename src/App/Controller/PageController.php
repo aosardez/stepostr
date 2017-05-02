@@ -16,9 +16,14 @@ class PageController extends BaseController
     public function getAllPages(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Pages Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
+        $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        if ($adminSession == null) {
+            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        }
         $pageDigestsMapper = new PageDigestMapper($this->db);
         $pageDigests = $pageDigestsMapper->readAll(0);     
-        return $this->view->render($response, 'admin\page.list.html.twig', array('siteDetail' => $this->getSiteDetail(), 'navSession' => $this->getNavSession('Pages', 'Pages', null), 'pageDigests' => $pageDigests));
+        return $this->view->render($response, 'admin\page.list.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Pages', 'Pages', null), 'adminSession' => $adminSession, 'pageDigests' => $pageDigests));
     }
 
     public function getPageById(RequestInterface $request, ResponseInterface $response, $args)
