@@ -9,14 +9,15 @@ class AccountMapper extends BaseMapper
 {
     public function create(Account $model)
     {
-        $sql = "INSERT INTO account (username, password, displayName, active, lastLoginDate, dateCreated, dateModified)
-            VALUES (:username, :password, :displayName, :active, :lastLoginDate, :dateCreated, :dateModified)";
+        $sql = "INSERT INTO account (username, password, displayName, active, admin, lastLoginDate, dateCreated, dateModified)
+            VALUES (:username, :password, :displayName, :active, :admin, :lastLoginDate, :dateCreated, :dateModified)";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "username" => $model->getUsername(),
             "password" => $model->getPassword(),
             "displayName" => $model->getDisplayName(),
             "active" => $model->getActive(),
+            "admin" => $model->getAdmin(),
             "lastLoginDate" => $model->getLastLoginDate(),
             "dateCreated" => $model->getDateCreated(),
             "dateModified" => $model->getDateModified()
@@ -29,7 +30,7 @@ class AccountMapper extends BaseMapper
 
     public function readAll() 
     {
-        $sql = "SELECT id, username, password, displayName, active, lastLoginDate, dateCreated, dateModified FROM account
+        $sql = "SELECT id, username, password, displayName, active, admin, lastLoginDate, dateCreated, dateModified FROM account
             ORDER BY username";
         $stmt = $this->db->query($sql);
         $results = [];
@@ -41,19 +42,44 @@ class AccountMapper extends BaseMapper
 
     public function read($id) 
     {
-        $sql = "SELECT id, username, password, displayName, active, lastLoginDate, dateCreated, dateModified FROM account
+        $sql = "SELECT id, username, password, displayName, active, admin, lastLoginDate, dateCreated, dateModified FROM account
             WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "id" => $id
         ]);
         if($result) {
-            return new Account($stmt->fetch());
+            $row = $stmt->fetch();
+            if($row != null) { 
+                return new Account($row);
+            }
+            else {
+                return null;
+            }
+        }
+    }
+
+    public function readByUsername($username) 
+    {
+        $sql = "SELECT id, username, password, displayName, active, admin, lastLoginDate, dateCreated, dateModified FROM account
+            WHERE username = :username";
+        $stmt = $this->db->prepare($sql);
+        $result = $stmt->execute([
+            "username" => $username
+        ]);
+        if($result) {
+            $row = $stmt->fetch();
+            if($row != null) { 
+                return new Account($row);
+            }
+            else {
+                return null;
+            }
         }
     }
 
     public function update(Account $model) {
-        $sql = "UPDATE account SET username = :username, password = :password, displayName = :displayName, active = :active, lastLoginDate = :lastLoginDate, dateCreated = :dateCreated, dateModified = :dateModified
+        $sql = "UPDATE account SET username = :username, password = :password, displayName = :displayName, active = :active, admin = :admin, lastLoginDate = :lastLoginDate, dateCreated = :dateCreated, dateModified = :dateModified
             WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
@@ -62,6 +88,7 @@ class AccountMapper extends BaseMapper
             "password" => $model->getPassword(),
             "displayName" => $model->getDisplayName(),
             "active" => $model->getActive(),
+            "admin" => $model->getAdmin(),
             "lastLoginDate" => $model->getLastLoginDate(),
             "dateCreated" => $model->getDateCreated(),
             "dateModified" => $model->getDateModified()

@@ -14,16 +14,40 @@ class AccountController extends BaseController
 {
     public function getLogin(RequestInterface $request, ResponseInterface $response, $args)
     {
-        $_SESSION["accountId"] = 1;
-        $_SESSION["isAdmin"] = 1;
+        $this->logger->debug("Area:Account Action:getLogin Client:" . $_SERVER['REMOTE_ADDR']);           
+        $siteDetail = $this->getSiteDetail();
+        $adminSession = $this->getAdminSession();
+        return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Login', null, null), 'adminSession' => $adminSession));
+    }
 
-        $this->logger->debug("Area:Account Action:getLogin Client:" . $_SERVER['REMOTE_ADDR']);   
-        return $this->view->render($response, 'admin\login.html.twig', array('message' => 'Please enter username and password.'));
+    public function getLogout(RequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->debug("Area:Account Action:getLogout Client:" . $_SERVER['REMOTE_ADDR']);           
+        session_unset();
+        $siteDetail = $this->getSiteDetail();
+        return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Login', null, null)));
     }
 
     public function postLogin(RequestInterface $request, ResponseInterface $response, $args)
     {
-        // to follow
+        $this->logger->debug("Area:Account Action:postAccount Client:" . $_SERVER['REMOTE_ADDR']);
+        $siteDetail = $this->getSiteDetail();
+        $accessDenied = true;
+        $accountMapper = new AccountMapper($this->db);
+        $data = $request->getParsedBody(); 
+        $account = $accountMapper->readByUsername($data['username']);
+        if ($account != null && $account->getPassword() == $data['password']) {
+            $accessDenied = false;
+            $_SESSION["accountId"] = $account->getId();
+            $_SESSION["isAdmin"] = $account->getAdmin();
+            $adminSession = $this->getAdminSession();
+            $account->setLastLoginDate(date('Y-m-d H:i:s'));
+            $accountMapper->update($account);
+            return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('My Account', 'Account', null), 'adminSession' => $adminSession, 'account' => $account));  
+        }
+        else {            
+            return $this->view->render($response, 'admin\login.html.twig', array('siteDetail' => $siteDetail, 'navSession' => $this->getNavSession('Login', null, null), 'accessDenied' => $accessDenied));
+        }
     }
 
     public function getAccount(RequestInterface $request, ResponseInterface $response, $args)

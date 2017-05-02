@@ -9,6 +9,7 @@ class Account
     protected $password;
     protected $displayName;
     protected $active;
+    protected $admin;
     protected $lastLoginDate;
     protected $dateCreated;
     protected $dateModified;
@@ -19,6 +20,7 @@ class Account
         $this->password = $data['password'] ?? null;
         $this->displayName = $data['displayName'] ?? null;
         $this->active = $data['active'] ?? 0;
+        $this->admin = $data['admin'] ?? 0;
         $this->lastLoginDate = $data['lastLoginDate'] ?? null;
         $this->dateCreated = $data['dateCreated'] ?? null;
         $this->dateModified = $data['dateModified'] ?? null;
@@ -48,8 +50,16 @@ class Account
         return $this->active;
     }
 
+    public function getAdmin() {
+        return $this->admin;
+    }
+
     public function getLastLoginDate() {
         return $this->lastLoginDate;
+    }
+
+    public function setLastLoginDate($lastLoginDate) {
+        $this->lastLoginDate = $lastLoginDate;
     }
 
     public function getDateCreated() {

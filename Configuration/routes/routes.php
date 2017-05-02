@@ -10,8 +10,8 @@ $app->get('/about', 'SiteNavigationController:getAboutPage');
 // Account Management Routes
 $app->get('/admin', 'AccountController:getLogin');
 $app->get('/admin/login', 'AccountController:getLogin');
+$app->get('/admin/logout', 'AccountController:getLogout');
 $app->get('/admin/account', 'AccountController:getAccount');
-$app->post('/admin', 'AccountController:postLogin');
 $app->post('/admin/login', 'AccountController:postLogin');
 $app->post('/admin/account', 'AccountController:postAccount');
 
