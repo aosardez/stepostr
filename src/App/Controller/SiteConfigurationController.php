@@ -6,25 +6,15 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Controller\BaseController;
 use App\Model\About;
 use App\Model\SiteDetail;
 use App\ModelMapper\AboutMapper;
 use App\ModelMapper\SiteDetailMapper;
 use App\ModelMapper\ThemeMapper;
 
-class SiteConfigurationController
+class SiteConfigurationController extends BaseController
 {
-    private $logger;
-    private $view;
-    private $db;
-
-    public function __construct(LoggerInterface $logger, Twig $view, \PDO $db)
-    {
-        $this->logger   = $logger;
-        $this->view   = $view;
-        $this->db   = $db;
-    }
-
     public function getAbout(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Configuration Action:getAbout Client:" . $_SERVER['REMOTE_ADDR']);   
@@ -58,12 +48,5 @@ class SiteConfigurationController
     public function postTheme(RequestInterface $request, ResponseInterface $response, $args)
     {
         // to follow
-    }
-
-    private function getSiteDetail()
-    {
-        $siteDetailMapper = new SiteDetailMapper($this->db);
-        $siteDetail = $siteDetailMapper->read();
-        return $siteDetail;
     }
 }

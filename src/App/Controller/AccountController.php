@@ -6,23 +6,13 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Controller\BaseController;
 use App\Model\Account;
 use App\ModelMapper\AccountMapper;
 use App\ModelMapper\SiteDetailMapper;
 
-class AccountController
+class AccountController extends BaseController
 {
-    private $logger;
-    private $view;
-    private $db;
-
-    public function __construct(LoggerInterface $logger, Twig $view, \PDO $db)
-    {
-        $this->logger   = $logger;
-        $this->view   = $view;
-        $this->db   = $db;
-    }
-
     public function getLogin(RequestInterface $request, ResponseInterface $response, $args)
     {
         $_SESSION["accountId"] = 1;
@@ -62,12 +52,5 @@ class AccountController
         $accountMapper = new AccountMapper($this->db);
         $accountMapper->update($account);
         return $this->view->render($response, 'admin\account.html.twig', array('siteDetail' => $this->getSiteDetail(), 'account' => $account, 'currentTitle' => 'My Account', 'isAccount' => true));
-    }
-
-    private function getSiteDetail()
-    {
-        $siteDetailMapper = new SiteDetailMapper($this->db);
-        $siteDetail = $siteDetailMapper->read();
-        return $siteDetail;
     }
 }

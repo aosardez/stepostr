@@ -6,23 +6,13 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Controller\BaseController;
 use App\ModelMapper\PageMapper;
 use App\ModelMapper\PageDigestMapper;
 use App\ModelMapper\SiteDetailMapper;
 
-class PageController
+class PageController extends BaseController
 {
-    private $logger;
-    private $view;
-    private $db;
-
-    public function __construct(LoggerInterface $logger, Twig $view, \PDO $db)
-    {
-        $this->logger   = $logger;
-        $this->view   = $view;
-        $this->db   = $db;
-    }    
-
     public function getAllPages(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
@@ -42,12 +32,5 @@ class PageController
     public function postPage(RequestInterface $request, ResponseInterface $response, $args)
     {
         // to follow
-    }
-
-    private function getSiteDetail()
-    {
-        $siteDetailMapper = new SiteDetailMapper($this->db);
-        $siteDetail = $siteDetailMapper->read();
-        return $siteDetail;
     }
 }

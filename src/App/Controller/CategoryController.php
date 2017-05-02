@@ -6,23 +6,13 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Controller\BaseController;
 use App\Model\Category;
 use App\ModelMapper\CategoryMapper;
 use App\ModelMapper\SiteDetailMapper;
 
-class CategoryController
+class CategoryController extends BaseController
 {
-    private $logger;
-    private $view;
-    private $db;
-
-    public function __construct(LoggerInterface $logger, Twig $view, \PDO $db)
-    {
-        $this->logger   = $logger;
-        $this->view   = $view;
-        $this->db   = $db;
-    }    
-
     public function getAllCategories(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Category Action:getAllCategories Client:" . $_SERVER['REMOTE_ADDR']);
@@ -81,12 +71,5 @@ class CategoryController
             $category->setId($id);
         }
         return $this->view->render($response, 'admin\category.html.twig', array('siteDetail' => $this->getSiteDetail(), 'category' => $category, 'currentTitle' => 'Edit Category', 'isCategories' => true));     
-    }
-
-    private function getSiteDetail()
-    {
-        $siteDetailMapper = new SiteDetailMapper($this->db);
-        $siteDetail = $siteDetailMapper->read();
-        return $siteDetail;
     }
 }

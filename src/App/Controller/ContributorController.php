@@ -6,23 +6,13 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Controller\BaseController;
 use App\Model\Account;
 use App\ModelMapper\AccountMapper;
 use App\ModelMapper\SiteDetailMapper;
 
-class ContributorController
+class ContributorController extends BaseController
 {
-    private $logger;
-    private $view;
-    private $db;
-
-    public function __construct(LoggerInterface $logger, Twig $view, \PDO $db)
-    {
-        $this->logger   = $logger;
-        $this->view   = $view;
-        $this->db   = $db;
-    }    
-
     public function getAllContributors(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Contributors Action:getAllContributors Client:" . $_SERVER['REMOTE_ADDR']);
@@ -83,12 +73,5 @@ class ContributorController
             $contributor->setId($id);
         }
         return $this->view->render($response, 'admin\contributor.html.twig', array('siteDetail' => $this->getSiteDetail(), 'contributor' => $contributor, 'currentTitle' => 'Edit Contributor', 'isContributors' => true));        
-    }
-
-    private function getSiteDetail()
-    {
-        $siteDetailMapper = new SiteDetailMapper($this->db);
-        $siteDetail = $siteDetailMapper->read();
-        return $siteDetail;
     }
 }

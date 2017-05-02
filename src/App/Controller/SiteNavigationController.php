@@ -6,25 +6,15 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
+use App\Controller\BaseController;
 use App\ModelMapper\AboutMapper;
 use App\ModelMapper\CategoryMapper;
 use App\ModelMapper\PageMapper;
 use App\ModelMapper\PageDigestMapper;
 use App\ModelMapper\SiteDetailMapper;
 
-class SiteNavigationController
+class SiteNavigationController extends BaseController
 {
-    private $logger;
-    private $view;
-    private $db;
-
-    public function __construct(LoggerInterface $logger, Twig $view, \PDO $db)
-    {
-        $this->logger   = $logger;
-        $this->view   = $view;
-        $this->db   = $db;
-    }
-
     public function getAllPages(RequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->debug("Area:Navigation Action:getAllPages Client:" . $_SERVER['REMOTE_ADDR']);
@@ -65,13 +55,6 @@ class SiteNavigationController
         $aboutMapper = new AboutMapper($this->db);
         $about = $aboutMapper->read();     
         return $this->view->render($response, 'about.html.twig', array('siteDetail' => $this->getSiteDetail(), 'categories' => $this->getCategories(), 'about' => $about, 'currentTitle' => 'About', 'isAbout' => true));
-    }
-
-    private function getSiteDetail()
-    {
-        $siteDetailMapper = new SiteDetailMapper($this->db);
-        $siteDetail = $siteDetailMapper->read();
-        return $siteDetail;
     }
 
     private function getCategories()
