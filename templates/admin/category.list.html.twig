@@ -21,7 +21,7 @@
 	                        <td>{{ category.getPublished() ? 'yes' : 'no' }}</td>
 	                        <td>{{ category.getDateModified()|date("F d, Y g:i A") }}</td>  
                             <td>
-                                <a href="/admin/category/{{ category.getId() }}" class="btn btn-default">Edit</a>
+                                <a href="/admin/category-edit/{{ category.getId() }}" class="btn btn-default">Edit</a>
                                 <a href="#" data-href="/admin/category-delete/{{ category.getId() }}" data-toggle="modal" data-target="#confirm-delete" class="btn btn-default">Delete</a>
                             </td>
 	                    </tr>

@@ -23,15 +23,15 @@ $app->post('/admin/theme', 'SiteConfigurationController:postTheme');
 
 // Contributors Management Routes
 $app->get('/admin/contributor', 'ContributorController:getAllContributors');
-$app->get('/admin/contributor/[{id}]', 'ContributorController:getContributorById');
 $app->get('/admin/contributor-add', 'ContributorController:getContributorForCreate');
+$app->get('/admin/contributor-edit/[{id}]', 'ContributorController:getContributorById');
 $app->get('/admin/contributor-delete/[{id}]', 'ContributorController:getContributorByIdForDelete');
 $app->post('/admin/contributor-save', 'ContributorController:postContributor');
 
 // Categories Management Routes
 $app->get('/admin/category', 'CategoryController:getAllCategories');
-$app->get('/admin/category/[{id}]', 'CategoryController:getCategoryById');
 $app->get('/admin/category-add', 'CategoryController:getCategoryForCreate');
+$app->get('/admin/category-edit/[{id}]', 'CategoryController:getCategoryById');
 $app->get('/admin/category-delete/[{id}]', 'CategoryController:getCategoryByIdForDelete');
 $app->post('/admin/category-save', 'CategoryController:postCategory');
 
