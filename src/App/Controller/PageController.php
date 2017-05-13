@@ -21,7 +21,7 @@ class PageController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $pageDigestsMapper = new PageDigestMapper($this->db);
         $pageDigests = $pageDigestsMapper->readAll(0);     
@@ -34,9 +34,9 @@ class PageController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
-        $data = array('id' => 0);
+        $data = array('id' => 0, 'showIntroductionLabel' => 1, 'introductionLabel' => 'Introduction', 'showStepLabel' => 1, 'stepLabel' => 'Step', 'showStepNumber' => 1, 'showConclusionLabel' => 1, 'conclusionLabel' => 'Conclusion');
         $page = new Page($data);
         $categoriesMapper = new CategoryMapper($this->db);
         $categories = $categoriesMapper->readAll();   
@@ -49,7 +49,7 @@ class PageController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $pageMapper = new PageMapper($this->db);
         $page = $pageMapper->read($args['id']);
@@ -65,8 +65,8 @@ class PageController extends BaseController
         $this->logger->debug("Area:Pages Action:getPageByIdForDelete Client:" . $_SERVER['REMOTE_ADDR'] . " Arguments:" . $args['id']);
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
-        if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        if ($adminSession == null) {
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $pageMapper = new PageMapper($this->db);
         $pageMapper->delete($args['id']);     
@@ -80,11 +80,42 @@ class PageController extends BaseController
         $this->logger->debug("Area:Pages Action:postPage Client:" . $_SERVER['REMOTE_ADDR']);
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
-        if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        if ($adminSession == null) {
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = $request->getParsedBody();
         $data['slug'] = str_replace(' ', '-', strtolower($data['title']));
+        $data['slug'] = str_replace('.', '-', $data['slug']);
+        if (array_key_exists ('showIntroductionLabel', $data)) {
+            $data['showIntroductionLabel'] = $data['showIntroductionLabel'] == "on" ? 1 : 0;
+        }
+        else {
+            $data['showIntroductionLabel'] = 0;
+        }
+        if (array_key_exists ('showBodyLabel', $data)) {
+            $data['showBodyLabel'] = $data['showBodyLabel'] == "on" ? 1 : 0;
+        }
+        else {
+            $data['showBodyLabel'] = 0;
+        }
+        if (array_key_exists ('showStepLabel', $data)) {
+            $data['showStepLabel'] = $data['showStepLabel'] == "on" ? 1 : 0;
+        }
+        else {
+            $data['showStepLabel'] = 0;
+        }
+        if (array_key_exists ('showStepNumber', $data)) {
+            $data['showStepNumber'] = $data['showStepNumber'] == "on" ? 1 : 0;
+        }
+        else {
+            $data['showStepNumber'] = 0;
+        }
+        if (array_key_exists ('showConclusionLabel', $data)) {
+            $data['showConclusionLabel'] = $data['showConclusionLabel'] == "on" ? 1 : 0;
+        }
+        else {
+            $data['showConclusionLabel'] = 0;
+        }
         if (array_key_exists ('published', $data)) {
             $data['published'] = $data['published'] == "on" ? 1 : 0;
         }
@@ -94,7 +125,7 @@ class PageController extends BaseController
         if ($data['authorId'] == 0) {
             $data['authorId'] = $_SESSION["accountId"];
         }
-        $data['updatedId'] = $_SESSION["accountId"];
+        $data['updaterId'] = $_SESSION["accountId"];
         if ($data['dateCreated'] == "") {
             $data['dateCreated'] = date('Y-m-d H:i:s');
         }

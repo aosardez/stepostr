@@ -22,7 +22,7 @@ class PageStepController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = array('id' => 0, 'pageId' => $_GET['pageId'], 'order' => $_GET['order'] + 1);        
         $pageStep = new PageStep($data);
@@ -37,7 +37,7 @@ class PageStepController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $pageStepMapper = new PageStepMapper($this->db);     
         $pageStep = $pageStepMapper->read($_GET['id']);
@@ -51,8 +51,8 @@ class PageStepController extends BaseController
         $this->logger->debug("Area:PageStep Action:getPageByIdForDelete Client:" . $_SERVER['REMOTE_ADDR']);
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
-        if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        if ($adminSession == null) {
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $pageStepMapper = new PageStepMapper($this->db);
         $pageStepMapper->delete($_GET['id']);     
@@ -70,8 +70,8 @@ class PageStepController extends BaseController
         $this->logger->debug("Area:PageStep Action:postPage Client:" . $_SERVER['REMOTE_ADDR']);
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
-        if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+        if ($adminSession == null) {
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = $request->getParsedBody();
         $pageStep = new PageStep($data);

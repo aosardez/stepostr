@@ -32,15 +32,11 @@ class AccountController extends BaseController
     {
         $this->logger->debug("Area:Account Action:postAccount Client:" . $_SERVER['REMOTE_ADDR']);
         $siteDetail = $this->getSiteDetail();
-        $adminSession = $this->getAdminSession();
-        if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
-        }
         $accessDenied = true;
         $accountMapper = new AccountMapper($this->db);
         $data = $request->getParsedBody(); 
         $account = $accountMapper->readByUsername($data['username']);
-        if ($account != null && $account->getPassword() == $data['password']) {
+        if ($account != null && password_verify($data['password'], $account->getPassword())) {
             $accessDenied = false;
             $_SESSION["accountId"] = $account->getId();
             $_SESSION["isAdmin"] = $account->getAdmin();
@@ -60,7 +56,7 @@ class AccountController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $accountMapper = new AccountMapper($this->db);
         $account = $accountMapper->read($_SESSION["accountId"]);
@@ -73,14 +69,11 @@ class AccountController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = $request->getParsedBody(); 
-        if (array_key_exists ('active', $data)) {
-            $data['active'] = $data['active'] == "on" ? 1 : 0;
-        }
-        else {
-            $data['active'] = 0;
+        if ($data['password'] != $data['originalPassword']) {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
         if ($data['lastLoginDate'] == "") {
             $data['lastLoginDate'] = null;

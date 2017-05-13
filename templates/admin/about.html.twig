@@ -17,8 +17,8 @@
             <textarea class="form-control" rows="15" name="body" required>{{ about.getBody() }}</textarea>
         </div>
         <div class="form-group">
-            <label class="control-label" for="text-input">Date Modified:</label>
-            <p class="form-static-control">{% if account.getDateModified() is not empty %}{{ about.getDateModified()|date("F d, Y g:i A") }}{% endif %}</p>
+            <label class="control-label" for="text">Date Modified:</label>
+            <p class="form-static-control">{{ about.getDateModified()|date("F d, Y g:i A") }}</p>
             <p> </p>
         </div>
         <div class="form-group">

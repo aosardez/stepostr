@@ -7,9 +7,18 @@ class Page
 	protected $id;
     protected $title;
     protected $slug;
+    protected $showIntroductionLabel;
+    protected $introductionLabel;
     protected $introduction;
+    protected $showBodyLabel;
+    protected $bodyLabel;
     protected $body;
+    protected $showStepLabel;
+    protected $stepLabel;
+    protected $showStepNumber;
     protected $steps;
+    protected $showConclusionLabel;
+    protected $conclusionLabel;
     protected $conclusion;
     protected $categoryId;
     protected $authorId;
@@ -22,9 +31,18 @@ class Page
         $this->id = $data['id'] ?? 0;
         $this->title = $data['title'] ?? null;
         $this->slug = $data['slug'] ?? null;
+        $this->showIntroductionLabel = $data['showIntroductionLabel'] ?? 0;
+        $this->introductionLabel = $data['introductionLabel'] ?? null;
         $this->introduction = $data['introduction'] ?? null;
+        $this->showBodyLabel = $data['showBodyLabel'] ?? 0;
+        $this->bodyLabel = $data['bodyLabel'] ?? null;
         $this->body = $data['body'] ?? null;
+        $this->showStepLabel = $data['showStepLabel'] ?? 0;
+        $this->stepLabel = $data['stepLabel'] ?? null;
+        $this->showStepNumber = $data['showStepNumber'] ?? 0;
         $this->steps = $data['steps'] ?? null;
+        $this->showConclusionLabel = $data['showConclusionLabel'] ?? 0;
+        $this->conclusionLabel = $data['conclusionLabel'] ?? null;
         $this->conclusion = $data['conclusion'] ?? null;
         $this->categoryId = $data['categoryId'] ?? 0;
         $this->authorId = $data['authorId'] ?? 0;
@@ -50,16 +68,52 @@ class Page
         return $this->slug;
     }
 
+    public function getShowIntroductionLabel() {
+        return $this->showIntroductionLabel;
+    }
+
+    public function getIntroductionLabel() {
+        return $this->introductionLabel;
+    }
+
     public function getIntroduction() {
         return $this->introduction;
+    }
+
+    public function getShowBodyLabel() {
+        return $this->showBodyLabel;
+    }
+
+    public function getBodyLabel() {
+        return $this->bodyLabel;
     }
 
     public function getBody() {
         return $this->body;
     }
 
+    public function getShowStepLabel() {
+        return $this->showStepLabel;
+    }
+
+    public function getStepLabel() {
+        return $this->stepLabel;
+    }
+
+    public function getShowStepNumber() {
+        return $this->showStepNumber;
+    }
+
     public function getSteps() {
         return $this->steps;
+    }
+
+    public function getShowConclusionLabel() {
+        return $this->showConclusionLabel;
+    }
+
+    public function getConclusionLabel() {
+        return $this->conclusionLabel;
     }
 
     public function getConclusion() {

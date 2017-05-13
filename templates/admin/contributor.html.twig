@@ -5,6 +5,8 @@
         <h2>Contributor Details</h2>
         <p> </p>
         <input type="hidden" name="id" value="{{ contributor.getId() }}">
+        <input type="hidden" name="originalPassword" value="{{ account.getPassword() }}">
+        <input type="hidden" name="admin" value="{{ contributor.getAdmin() }}">
         <input type="hidden" name="lastLoginDate" value="{{ contributor.getLastLoginDate() }}">
         <input type="hidden" name="dateCreated" value="{{ contributor.getDateCreated() }}">
 	    <div class="form-group">

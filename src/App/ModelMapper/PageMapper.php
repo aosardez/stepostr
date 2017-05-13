@@ -10,14 +10,23 @@ class PageMapper extends BaseMapper
 {
     public function create(Page $model)
     {
-        $sql = "INSERT INTO page (title, slug, introduction, body, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified)
-            VALUES (:title, :slug, :introduction, :body, :conclusion, :categoryId, :authorId, :updaterId, :published, :dateCreated, :dateModified)";
+        $sql = "INSERT INTO page (title, slug, showIntroductionLabel, introductionLabel, introduction, showBodyLabel, bodyLabel, body, showStepLabel, stepLabel, showStepNumber, showConclusionLabel, conclusionLabel, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified)
+            VALUES (:title, :slug, :showIntroductionLabel, :introductionLabel, :introduction, :showBodyLabel, :bodyLabel, :body, :showStepLabel, :stepLabel, :showStepNumber, :showConclusionLabel, :conclusionLabel, :conclusion, :categoryId, :authorId, :updaterId, :published, :dateCreated, :dateModified)";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "title" => $model->getTitle(),
             "slug" => $model->getSlug(),
+            "showIntroductionLabel" => $model->getShowIntroductionLabel(),
+            "introductionLabel" => $model->getIntroductionLabel(),
             "introduction" => $model->getIntroduction(),
+            "showBodyLabel" => $model->getShowBodyLabel(),
+            "bodyLabel" => $model->getBodyLabel(),
             "body" => $model->getBody(),
+            "showStepLabel" => $model->getShowStepLabel(),
+            "stepLabel" => $model->getStepLabel(),
+            "showStepNumber" => $model->getShowStepNumber(),
+            "showConclusionLabel" => $model->getShowConclusionLabel(),
+            "conclusionLabel" => $model->getConclusionLabel(),
             "conclusion" => $model->getConclusion(),
             "categoryId" => $model->getCategoryId(),
             "authorId" => $model->getAuthorId(),
@@ -35,7 +44,7 @@ class PageMapper extends BaseMapper
 
     public function readAll($includeSteps) 
     {
-        $sql = "SELECT id, title, slug, introduction, body, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified FROM page
+        $sql = "SELECT id, title, slug, showIntroductionLabel, introductionLabel, introduction, showBodyLabel, bodyLabel, body, showStepLabel, stepLabel, showStepNumber, showConclusionLabel, conclusionLabel, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified FROM page
             ORDER BY dateCreated DESC";
         $stmt = $this->db->query($sql);
         $results = [];
@@ -57,7 +66,7 @@ class PageMapper extends BaseMapper
 
     public function read($key) 
     {
-        $sql = "SELECT id, title, slug, introduction, body, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified FROM page
+        $sql = "SELECT id, title, slug, showIntroductionLabel, introductionLabel, introduction, showBodyLabel, bodyLabel, body, showStepLabel, stepLabel, showStepNumber, showConclusionLabel, conclusionLabel, conclusion, categoryId, authorId, updaterId, published, dateCreated, dateModified FROM page
             WHERE id = :key OR slug = :key";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
@@ -73,15 +82,24 @@ class PageMapper extends BaseMapper
     }
 
     public function update(Page $model) {
-        $sql = "UPDATE page SET title = :title, slug = :slug, introduction = :introduction, body = :body, conclusion = :conclusion, categoryId = :categoryId, authorId = :authorId, updaterId = :updaterId, published = :published, dateCreated = :dateCreated, dateModified = :dateModified
+        $sql = "UPDATE page SET title = :title, slug = :slug, showIntroductionLabel = :showIntroductionLabel, introductionLabel = :introductionLabel, introduction = :introduction, showBodyLabel = :showBodyLabel, bodyLabel = :bodyLabel, body = :body, showStepLabel = :showStepLabel, stepLabel = :stepLabel, showStepNumber = :showStepNumber, showConclusionLabel = :showConclusionLabel, conclusionLabel = :conclusionLabel, conclusion = :conclusion, categoryId = :categoryId, authorId = :authorId, updaterId = :updaterId, published = :published, dateCreated = :dateCreated, dateModified = :dateModified
             WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "id" => $model->getId(),
             "title" => $model->getTitle(),
             "slug" => $model->getSlug(),
+            "showIntroductionLabel" => $model->getShowIntroductionLabel(),
+            "introductionLabel" => $model->getIntroductionLabel(),
             "introduction" => $model->getIntroduction(),
+            "showBodyLabel" => $model->getShowBodyLabel(),
+            "bodyLabel" => $model->getBodyLabel(),
             "body" => $model->getBody(),
+            "showStepLabel" => $model->getShowStepLabel(),
+            "stepLabel" => $model->getStepLabel(),
+            "showStepNumber" => $model->getShowStepNumber(),
+            "showConclusionLabel" => $model->getShowConclusionLabel(),
+            "conclusionLabel" => $model->getConclusionLabel(),
             "conclusion" => $model->getConclusion(),
             "categoryId" => $model->getCategoryId(),
             "authorId" => $model->getAuthorId(),

@@ -21,7 +21,7 @@ class SiteConfigurationController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $aboutMapper = new AboutMapper($this->db);
         $about = $aboutMapper->read();     
@@ -34,7 +34,7 @@ class SiteConfigurationController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = $request->getParsedBody(); 
         $data['dateModified'] = date('Y-m-d H:i:s');
@@ -53,7 +53,7 @@ class SiteConfigurationController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         return $this->view->render($response, 'admin\theme.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Site Theme', 'SiteConfiguration', 'Theme'), 'adminSession' => $adminSession));
     }
@@ -64,12 +64,18 @@ class SiteConfigurationController extends BaseController
         $siteDetail = $this->getSiteDetail();
         $adminSession = $this->getAdminSession();
         if ($adminSession == null || !$adminSession->getIsAdmin()) {
-            return $this->view->render($response, 'admin\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
+            return $this->view->render($response, 'error\accessdenied.html.twig', array('siteDetail' => $siteDetail, 'theme' => $this->getTheme(), 'navSession' => $this->getNavSession('Access denied!', null, null), 'adminSession' => $adminSession));
         }
         $data = $request->getParsedBody(); 
         $themeMapper = new ThemeMapper($this->db);
         $theme = $themeMapper->read();
         $theme->setName($data['name']);
+        if (array_key_exists ('showSiteName', $data)) {
+            $theme->setShowSiteName($data['showSiteName'] == "on" ? 1 : 0);
+        }
+        else {
+            $theme->setShowSiteName(0);
+        }
         if (array_key_exists ('showBannerImage', $data)) {
             $theme->setShowBannerImage($data['showBannerImage'] == "on" ? 1 : 0);
         }

@@ -17,8 +17,28 @@
             <label class="control-label">{{ page.getSlug() }}</label>
         </div>
         <div class="form-group">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" name="showIntroductionLabel" {% if page.getShowIntroductionLabel() %}checked{% endif %}><strong>Display introduction label</strong></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="introductionLabel">Introduction label: </label>
+            <input class="form-control" type="text" name="introductionLabel" maxlength="20" value="{{ page.getIntroductionLabel() }}">
+        </div>
+        <div class="form-group">
             <label class="control-label" for="introduction">Introduction: </label>
             <textarea class="form-control" rows="7" name="introduction" required>{{ page.getIntroduction() }}</textarea>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" name="showBodyLabel" {% if page.getShowBodyLabel() %}checked{% endif %}><strong>Display body label</strong></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="bodyLabel">Body label: </label>
+            <input class="form-control" type="text" name="bodyLabel" maxlength="20" value="{{ page.getBodyLabel() }}">
         </div>
         <div class="form-group">
             <label class="control-label" for="body">Body: </label>
@@ -54,6 +74,32 @@
 		    {% else %}
 		    	<label class="control-label">You need to save the page first before you can create steps.</label>
 	        {% endif %}
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" name="showStepLabel" {% if page.getShowStepLabel() %}checked{% endif %}><strong>Display step label</strong></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="stepLabel">Step label: </label>
+            <input class="form-control" type="text" name="stepLabel" maxlength="20" value="{{ page.getStepLabel() }}">
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" name="showStepNumber" {% if page.getShowStepNumber() %}checked{% endif %}><strong>Display step number</strong></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" name="showConclusionLabel" {% if page.getShowConclusionLabel() %}checked{% endif %}><strong>Display conclusion label</strong></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="conclusionLabel">Conclusion label: </label>
+            <input class="form-control" type="text" name="conclusionLabel" maxlength="20" value="{{ page.getConclusionLabel() }}">
         </div>
         <div class="form-group">
             <label class="control-label" for="conclusion">Conclusion: </label>

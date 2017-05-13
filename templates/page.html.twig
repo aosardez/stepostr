@@ -4,16 +4,23 @@
 		<h2>{{ page.getTitle() }}</h2>
         <small><b>Category: </b><a href="/category/{{ pageDigest.getCategorySlug() }}">{{ pageDigest.getCategoryName() }}</a> <b>Author: </b>{{ pageDigest.getAuthorName() }} <b>Date Published: </b>{{ page.getDateCreated()|date("F d, Y") }}</small>
         <p/>
-	    <h4>Introduction</h4>
-        <p>{{ page.getIntroduction() }}</p>
-        <p>{{ page.getBody() }}</p>
+        {% if page.getShowIntroductionLabel() %}
+	    	<h4>{{ page.getIntroductionLabel() }}</h4>
+	    {% endif %}
+        <p>{{ page.getIntroduction()|nl2br }}</p>
+        {% if page.getShowBodyLabel() %}
+	    	<h4>{{ page.getBodyLabel() }}</h4>
+	    {% endif %}
+        <p>{{ page.getBody()|nl2br }}</p>
         {% set stepCtr = 1 %}
 	    {% for step in page.getSteps() %}
-	        <h4>Step {{ stepCtr }}: {{ step.getName() }}</h4>
-	        <p>{{ step.body() }}</p>
+	        <h4>{% if page.getShowStepLabel() %}{{ page.getStepLabel() }} {% endif %}{% if page.getShowStepNumber() %}{{ stepCtr }}: {% endif %}{{ step.getName() }}</h4>
+	        <p>{{ step.body()|nl2br }}</p>
 	        <p><img src="{{ step.getImagePath() }}"></P>
         	{% set stepCtr = stepCtr + 1 %}
 	    {% endfor %}
-	    <h4>Conclusion</h4>
-        <p>{{ page.getConclusion() }}</p>
+        {% if page.getShowConclusionLabel() %}
+	    	<h4>{{ page.getConclusionLabel() }}</h4>
+	    {% endif %}
+        <p>{{ page.getConclusion()|nl2br }}</p>
 {% endblock %}

@@ -6,6 +6,9 @@
         <p> </p>
         <input type="hidden" name="id" value="{{ account.getId() }}">
         <input type="hidden" name="username" value="{{ account.getUsername() }}">
+        <input type="hidden" name="originalPassword" value="{{ account.getPassword() }}">
+        <input type="hidden" name="active" value="{{ account.getActive() }}">
+        <input type="hidden" name="admin" value="{{ account.getAdmin() }}">
         <input type="hidden" name="lastLoginDate" value="{{ account.getLastLoginDate() }}">
         <input type="hidden" name="dateCreated" value="{{ account.getDateCreated() }}">
         <div class="form-group">
@@ -19,12 +22,6 @@
         <div class="form-group">
             <label class="control-label" for="displayName">Display Name:</label>
             <input class="form-control" type="text" name="displayName" value="{{ account.getDisplayName() }}" required="" maxlength="100" id="displayName">
-        </div>
-        <div class="form-group">
-            <div class="checkbox">
-                <label class="control-label">
-                    <input type="checkbox" name="active" {% if account.getActive() %} checked {% endif %}><strong>Active</strong></label>
-            </div>
         </div>
         <div class="form-group">
             <label class="control-label" for="text">Last Login Date:</label>

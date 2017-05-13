@@ -6,6 +6,6 @@
         <a href="/page/{{ page.getSlug() }}"><h3>{{ page.getTitle() }}</h3></a>
         <small><b>Category: </b><a href="/category/{{ page.getCategorySlug() }}">{{ page.getCategoryName() }}</a> <b>Author: </b>{{ page.getAuthorName() }} <b>Date Published: </b>{{ page.getDateCreated()|date("F d, Y") }}</small>
         <p/>
-        <p>{{ page.getIntroduction() }}</p>
+        <p>{{ page.getIntroduction()|nl2br }}</p>
     {% endfor %}
 {% endblock %}

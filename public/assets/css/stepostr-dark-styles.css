@@ -119,5 +119,7 @@ a:focus{
 }
 
 img{
-  max-width: 950px;
+  width: auto;
+  height: auto;
+  max-width: 100%;
 }

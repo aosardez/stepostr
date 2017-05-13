@@ -4,5 +4,5 @@
 	<h2>About {{ siteDetail.getTitle() }}</h2>
 	<small><b>Date Published: </b>{{ about.getDateModified()|date("F d, Y") }}</small>
 	<p/>
-    <p>{{ about.getBody() }}</p>
+    <p>{{ about.getBody()|nl2br }}</p>
 {% endblock %}

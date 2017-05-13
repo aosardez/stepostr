@@ -5,6 +5,7 @@ namespace App\Model;
 class Theme
 {
 	protected $name;
+    protected $showSiteName;
     protected $showBannerImage;
     protected $bannerImagePath;
     protected $showBackgroundImage;
@@ -13,6 +14,7 @@ class Theme
 
 	public function __construct(array $data) {
         $this->name = $data['name'] ?? null;
+        $this->showSiteName = $data['showSiteName'] ?? 0;
         $this->showBannerImage = $data['showBannerImage'] ?? 0;
         $this->bannerImagePath = $data['bannerImagePath'] ?? null;
         $this->showBackgroundImage = $data['showBackgroundImage'] ?? 0;
@@ -26,6 +28,14 @@ class Theme
 
     public function setName($name) {
         $this->name = $name;
+    }
+
+    public function getShowSiteName() {
+        return $this->showSiteName;
+    }
+
+    public function setShowSiteName($showSiteName) {
+        $this->showSiteName = $showSiteName;
     }
 
     public function getShowBannerImage() {

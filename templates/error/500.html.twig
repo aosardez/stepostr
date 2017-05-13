@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block banner %} {% endblock %}
+{% block menu %} {% endblock %}
+
+{% block content %}
+	<div style="padding:10px;">
+    <h2 class="text-danger"><img src="../assets/img/robo-error.png"> Opps! Someting went worng in uor syde... :(</h2>
+    <h4>{{ message }}</4>
+    <h4><a href="javascript:history.go(-1)" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> Go Back</a></h4>
+    <div>
+{% endblock %}

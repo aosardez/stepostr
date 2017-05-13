@@ -62,7 +62,7 @@ class AccountMapper extends BaseMapper
     public function readByUsername($username) 
     {
         $sql = "SELECT id, username, password, displayName, active, admin, lastLoginDate, dateCreated, dateModified FROM account
-            WHERE username = :username";
+            WHERE username = :username AND active = 1";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
             "username" => $username
